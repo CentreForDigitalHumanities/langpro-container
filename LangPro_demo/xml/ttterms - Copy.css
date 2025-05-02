@@ -1,0 +1,95 @@
+.fullttterm {
+    display:block;
+    background-color:rgb(220,251,218);
+    margin: 30px;
+    white-space: nowrap;
+}
+
+.lem {font-weight: bold; font-size: 100%;}
+.tok {font-size: 75%;}
+.pos {font-size: 60%;}
+.ner {font-size: 50%;}
+
+sub {font-size: 70%;}
+
+.ttterm {
+    display:inline-table;
+    vertical-align:top;
+    border-style: dotted;
+    border-width: 0px;
+    border-spacing: 0px; /* Removes the cell spacing via CSS */
+    border-collapse: collapse;  /* no double border where cells touch */
+    padding: 0px;
+}
+
+.type {
+    border-top:1px solid gray;
+    text-align: center;
+}
+
+.lambda {
+    font-size: 180%;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.lamx {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.tlp {
+    text-align:center;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-width: 0px;
+    /*border-style: dotted;
+    border-width: 1px 1px 1px 1px;*/
+    margin: auto;
+    padding: 0px;    
+}
+
+
+
+
+.conclusion {
+    text-align:center;
+}
+
+.llf {
+    font-family:courier, fixed, monospace;
+    font-weight:bold;
+}
+
+.closer_node {
+    font-family:courier, fixed, monospace;
+    font-weight:bold;
+	border: 2px solid black;
+	background-color:rgb(50,220,50);
+	padding:5px;
+}
+
+.model {
+    font-family:courier, fixed, monospace;
+    font-weight:bold;
+	border: 2px solid black;
+	background-color:rgb(240,70,70);
+	padding:5px;
+}
+
+.info {
+    font-family:arial, helvetica, sans-serif;
+    font-size:12px;
+}
+
+.true {
+    background-color:rgb(210,250,200);
+    padding:5px;
+    display:inline-block;
+}
+
+.false {
+    background-color:rgb(250,210,200);
+    padding:5px;
+    display:inline-block;
+}

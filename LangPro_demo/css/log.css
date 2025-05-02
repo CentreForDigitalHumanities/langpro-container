@@ -1,0 +1,56 @@
+table, th, td {
+    border: 1px solid black;
+    padding: 3px;
+}
+
+.log th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+table.log {
+	/*width:100%;*/
+	border-collapse: collapse;
+}
+
+tr.data {
+	font-size: 85%;
+}
+
+.log tr:nth-child(even) {
+	background-color: #ddf;
+}
+
+.log tr:nth-child(odd) {
+	background-color: #dfd;
+}
+
+.log tr:hover {
+	background-color: #ffb;
+}
+
+.log .os, .uri {
+	font-size: 70%;
+}
+
+.log .date, .ip {
+	white-space: nowrap;
+}
+
+.log .problem {
+	white-space: pre;
+}
+
+.log .answer {
+	font-size: 90%;
+	white-space: nowrap;
+	font-weight: bold;
+	text-align: center;
+}
+
+.log .votes {
+	font-size: 70%;
+	white-space: nowrap;
+	text-align: center;
+}
+

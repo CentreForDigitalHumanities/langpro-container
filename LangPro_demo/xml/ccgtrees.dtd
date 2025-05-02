@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT ccgtrees (ccgtree+) >
+    <!ELEMENT ccgtree ((unary|binary|leaf)) >
+    <!ELEMENT unary ((unary|binary|leaf), cat, rule) >
+    <!ELEMENT binary ((unary|binary|leaf), (unary|binary|leaf), cat, rule) >
+    <!ELEMENT leaf (tok, lem, pos, ner, cat) >
+        <!ELEMENT tok (#PCDATA) >
+        <!ELEMENT lem (#PCDATA) >
+        <!ELEMENT pos (#PCDATA) >
+        <!ELEMENT ner (#PCDATA) >
+        <!ELEMENT rule (#PCDATA) >
+        <!ELEMENT cat (#PCDATA) >

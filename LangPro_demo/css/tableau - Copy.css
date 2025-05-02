@@ -1,0 +1,156 @@
+tableau {
+	text-align:center;
+	display:block;
+}
+
+
+problem {
+    text-align:center;
+	display:block;
+    margin-left: auto;
+    margin-right: auto;
+	padding-bottom: 20px;
+}
+
+premise {
+    text-align:center;
+	display:block;
+ 	background-color:rgb(210,250,200);
+	padding: 3px;
+}
+
+/*premise:after {
+	content: '\A';
+	white-space:pre;
+}*/
+
+conclusion {
+	display:block;
+    text-align:center;
+	border-top: 3px solid gray;
+	background-color:rgb(250,210,200);
+	padding: 3px;
+}
+
+
+tree {
+    display:inline-table;
+    white-space: nowrap;
+    text-align:center;
+}
+
+
+tree:nth-child(3) {
+    border-top:3px solid green;
+    position: relative;
+	padding-left: 25px;
+}
+tree:nth-child(3):after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 50%;
+    top: -3px;
+    right: -25px;
+    border: 4px solid white;
+}
+
+
+tree:nth-last-child(2) {
+    border-top:3px solid blue;
+    position: relative;
+	padding-right: 25px;
+}
+tree:nth-last-child(2):after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 50%;
+    top: -3px;
+    left: -25px;
+    border: 4px solid white;
+}
+
+
+node {
+    display:block;
+	margin: 0px 0px 10px 0px;
+}
+
+node[id]:before {
+	vertical-align: 100%;
+	content: attr(id);
+	border: 1px solid black;
+}
+
+source:after {
+	content: attr(ruleApp);
+	font-size:70%;
+	display:block;
+}
+
+idlist, id, oldConstList  {
+	display:none;
+}
+
+
+
+
+
+modlist,arglist,llf {
+    font-family:courier, fixed, monospace;
+    font-weight:bold;
+	display:block;
+}
+
+arglist:before {
+    content: '[';
+}
+arglist:after {
+    content: ']';
+}
+
+modlist:before {
+    content: '[';
+}
+modlist:after {
+    content: ']';
+}
+
+
+
+closer {
+    font-family:courier, fixed, monospace;
+    font-weight:bold;
+	border: 2px solid black;
+	background-color:rgb(50,220,50);
+	padding:5px;
+}
+
+
+model {
+    font-family:courier, fixed, monospace;
+    font-weight:bold;
+	border: 2px solid black;
+	background-color:rgb(240,70,70);
+	padding:5px;
+}
+
+/*model:after {
+    content: 'Open branch';
+	display: block;
+}*/
+
+
+formula {
+	padding: 1px; 
+	display:inline-block;
+}
+
+formula[sign=true] {
+    background-color:rgb(210,250,200);
+}
+
+formula[sign=false] {
+    background-color:rgb(250,210,200);
+}

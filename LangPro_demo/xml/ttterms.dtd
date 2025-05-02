@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT ttterms (fullttterm+) >
+    <!ELEMENT fullttterm (ttterm) >
+    <!ELEMENT ttterm ((var|tlp|app|abst), type) >
+        <!ELEMENT var (#PCDATA) >
+        <!ELEMENT tlp (tok,lem,pos,ner) >
+            <!ELEMENT tok (#PCDATA) >
+            <!ELEMENT lem (#PCDATA) >
+            <!ELEMENT pos (#PCDATA) >
+            <!ELEMENT ner (#PCDATA) >
+        <!ELEMENT app (ttterm,ttterm) >
+        <!ELEMENT abst (ttterm,ttterm) >
+        <!ELEMENT type ANY >
+        <!ELEMENT tyfeat ANY >

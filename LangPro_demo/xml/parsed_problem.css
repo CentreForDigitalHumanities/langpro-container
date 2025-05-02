@@ -1,0 +1,61 @@
+.fullttterm {
+    display:inline-block;
+    background-color:rgb(220,251,218);
+    margin: 30px;
+    padding: 4px;
+    white-space: nowrap;
+}
+
+.highlight {
+    background-color: rgb(252,183,141);
+}
+
+.lem {font-weight: bold; font-size: 100%;}
+.tok {font-size: 75%;}
+.pos {font-size: 60%;}
+.ner {font-size: 50%;}
+
+tyfeat {font-size: 60%;
+      position: relative; 
+      bottom: -0.6ex;
+      left: -0.8ex;
+      margin-right: -1ex;
+}
+
+.ttterm {
+    display:inline-table;
+    vertical-align:top;
+    border-style: dotted;
+    border-width: 0px;
+    border-spacing: 0px; /* Removes the cell spacing via CSS */
+    padding: 0px;
+    margin-right: 0px;
+}
+
+.type {
+    border-top:1px solid gray;
+    text-align: center;
+}
+
+.lambda {
+    font-size: 100%;
+    margin-left: 1ex;
+}
+
+.lamx {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.tlp {
+    text-align:center;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-width: 0px;
+    /*border-style: dotted;
+    border-width: 1px 1px 1px 1px;*/
+    margin: auto;
+    padding: 0px;    
+}
+
+
