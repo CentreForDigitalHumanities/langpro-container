@@ -1,3 +1,1 @@
-LangPro_demo/parsers filter=lfs diff=lfs merge=lfs -text
-LangPro_demo/parsers/* filter=lfs diff=lfs merge=lfs -text
 LangPro_demo/parsers/**/* filter=lfs diff=lfs merge=lfs -text
