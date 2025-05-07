@@ -67,21 +67,21 @@ def prepare_input_json(premises, hypothesis, parser):
         ":- discontiguous sen_id/5.\n\n"
     )
 
-    sentence_per_line = []
+    sentences_escaped = []
     sentences_pl = []
     input = [(premise, "p") for premise in premises] + [(hypothesis, "h")]
 
     for idx, (sentence, type_) in enumerate(input):
         tokenized = " ".join(nltk.word_tokenize(sentence))
         escaped = tokenized.replace("'", "\\'")
-        sentence_per_line.append(escaped)
+        sentences_escaped.append(escaped)
         sentences_pl.append(
             "sen_id({0}, 1, '{1}', 'nil', '{2}').\n".format(idx, type_, escaped)
         )
 
-    derivations = lp.ccg_parsing(parser, sentence_per_line)
+    derivations = lp.ccg_parsing(parser, "\n".join(sentences_escaped))
 
-    return defs + sentences_pl + derivations
+    return "\n".join(defs) + "\n".join(sentences_pl) + derivations
 
 
 def get_goal(facts, config):
