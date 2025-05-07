@@ -1,4 +1,5 @@
 from flask import Flask, request
+import nltk
 
 import langpro_demo as lp
 from util import run_tool
@@ -39,14 +40,53 @@ def tabs_template(logs, tabs, final_answer, parsed, tab_content):
     """
 
 
-def get_goal(parser, config, user_input=False):
-    (sen_pl, spl) = lp.user_input_to_pl_spl(kw["input"])
-    kw["sen_pl"] += sen_pl
-    # parsing sentences with easyCCg and C&C
-    ders = lp.ccg_parsing(parser, spl)
-    pl_facts = kw["sen_pl"] + ders
-    assert_cl = lp.assertz_clause(pl_facts)
-    return ' -g "{0}, {1}, online_demo(1), halt"'.format(assert_cl, kw["config"])
+def prepare_config(config, senses, ral):
+    eff_cr = "effCr([equi, nonBr, nonProd, nonCons])"
+    wn_rel = "wn_ant, wn_der, wn_sim"
+    senses = "" if senses == "all" else "ss({})".format(senses)
+    allInt_aall = ", ".join(config) if config else ""
+    return f" parList([proof_tree, pr_kb, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
+
+
+def prepare_input(input, parser):
+    defs = (
+        ":- dynamic sen_id/5.\n"
+        ":- multifile sen_id/5.\n"
+        ":- discontiguous sen_id/5.\n\n"
+    )
+    sentences_pl, sentence_per_line = lp.user_input_to_pl_spl(input)
+    derivations = lp.ccg_parsing(parser, sentence_per_line)
+
+    return defs + sentences_pl + derivations
+
+
+def prepare_input_json(premises, hypothesis, parser):
+    defs = (
+        ":- dynamic sen_id/5.\n"
+        ":- multifile sen_id/5.\n"
+        ":- discontiguous sen_id/5.\n\n"
+    )
+
+    sentence_per_line = []
+    sentences_pl = []
+    input = [(premise, "p") for premise in premises] + [(hypothesis, "h")]
+
+    for idx, (sentence, type_) in enumerate(input):
+        tokenized = " ".join(nltk.word_tokenize(sentence))
+        escaped = tokenized.replace("'", "\\'")
+        sentence_per_line.append(escaped)
+        sentences_pl.append(
+            "sen_id({0}, 1, '{1}', 'nil', '{2}').\n".format(idx, type_, escaped)
+        )
+
+    derivations = lp.ccg_parsing(parser, sentence_per_line)
+
+    return defs + sentences_pl + derivations
+
+
+def get_goal(facts, config):
+    assert_cl = lp.assertz_clause(facts)
+    return ' -g "{0}, {1}, online_demo(1), halt"'.format(assert_cl, config)
 
 
 def format_results(results):
@@ -84,38 +124,14 @@ def test():
         raise RuntimeError()
 
     config = request.json["prover_config"]
-    premises = [premise.replace("'", "\\'") for premise in request.json["premises"]]
-    hypothesis = request.json["hypothesis"].replace("'", "\\'")
+    premises = request.json["premises"]
+    hypothesis = request.json["hypothesis"]
     ral = request.json["ral"]
     senses = request.json["senses"]
 
-    # format user input for prolog
-    sentences = (
-        ":- dynamic sen_id/5.\n"
-        ":- multifile sen_id/5.\n"
-        ":- discontiguous sen_id/5.\n\n"
-    )
-    for i, premise in enumerate(premises):
-        sentences += "sen_id({0}, 1, '{1}', 'nil', '{2}').\n".format(
-            i + 1, "p", premise
-        )
-    sentences += "sen_id({0}, 1, '{1}', 'nil', '{2}').\n".format(
-        len(premises) + 1, "h", hypothesis
-    )
-
-    eff_cr = "effCr([equi, nonBr, nonProd, nonCons])"
-    wn_rel = "wn_ant, wn_der, wn_sim"
-    senses = "" if senses == "all" else "ss({})".format(senses)
-    allInt_aall = ", ".join(config) if config else ""
-    kw_config = f" parList([proof_tree, pr_kb, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
-
-    # send input to parser
-    sentences_for_parser = "\n".join(premises + [hypothesis])
-    derivations = lp.ccg_parsing("cc", sentences_for_parser)
-
-    facts = sentences + derivations
-    assert_cl = lp.assertz_clause(facts)
-    goal = ' -g "{0}, {1}, online_demo(1), halt"'.format(assert_cl, kw_config)
+    config = prepare_config(config, senses, ral)
+    facts = prepare_input_json(premises, hypothesis, "cc")
+    goal = get_goal(facts, config)
     return langpro_raw(goal)
 
 
@@ -126,62 +142,30 @@ def process_user():
     parsers = lp.security_clean(request.args.getlist("parser"))
     ral = lp.security_clean(request.args.get("ral"))
     senses = lp.security_clean(request.args.get("senses"))
-    sen_pl = (
-        ":- dynamic sen_id/5.\n"
-        ":- multifile sen_id/5.\n"
-        ":- discontiguous sen_id/5.\n\n"
-    )
 
-    _sen_pl, spl = lp.user_input_to_pl_spl(input)
-    sen_pl += _sen_pl
-
-    eff_cr = "effCr([equi, nonBr, nonProd, nonCons])"
-    wn_rel = "wn_ant, wn_der, wn_sim"
-    senses = "" if senses == "all" else "ss({})".format(senses)
-    allInt_aall = ", ".join(config) if config else ""
-    kw_config = f" parList([proof_tree, pr_kb, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
-
-    goal_dict = {}
-    for parser in parsers:
-        derivations = lp.ccg_parsing(parser, spl)
-        pl_facts = sen_pl + derivations
-        assert_cl = lp.assertz_clause(pl_facts)
-        goal_dict[parser] = ' -g "{0}, {1}, online_demo(1), halt"'.format(
-            assert_cl, kw_config
-        )
+    config = prepare_config(config, senses, ral)
 
     results = []
     for parser in parsers:
-        swipl_goal = goal_dict[parser]
+        swipl_goal = get_goal(prepare_input(input, parser), config)
         results.append(lp.run_langpro(parser, LANGPRO_EXE, swipl_goal))
+
     return format_results(results)
 
 
 @app.route("/sick/")
 def process_sick():
     config = lp.security_clean(request.args.getlist("prover_config"))
-    input = lp.security_clean(request.args.get("rte_problem", ""))
     parsers = lp.security_clean(request.args.getlist("parser"))
     ral = lp.security_clean(request.args.get("ral"))
     senses = lp.security_clean(request.args.get("senses"))
     prob_id = lp.security_clean(request.args.get("prob_id"))
-    sen_pl = (
-        ":- dynamic sen_id/5.\n"
-        ":- multifile sen_id/5.\n"
-        ":- discontiguous sen_id/5.\n\n"
-    )
 
-    _sen_pl, spl = lp.user_input_to_pl_spl(input)
-    sen_pl += _sen_pl
+    config = prepare_config(config, senses, ral)
 
-    eff_cr = "effCr([equi, nonBr, nonProd, nonCons])"
-    wn_rel = "wn_ant, wn_der, wn_sim"
-    senses = "" if senses == "all" else "ss({})".format(senses)
-    allInt_aall = ", ".join(config) if config else ""
-    kw_config = f" parList([proof_tree, pr_kb, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
     data_name = "SICK_train_sen"
     goal = ' -g "{0}, online_demo({1}), halt" -l {2}/{3}'.format(
-        kw_config, prob_id, RTE_PROB_DIR, data_name
+        config, prob_id, RTE_PROB_DIR, data_name
     )
 
     results = []
