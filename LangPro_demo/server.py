@@ -6,7 +6,7 @@ from util import run_tool
 
 app = Flask(__name__)
 
-LANGPRO_EXE = "nat_lang_pro/langpro"
+LANGPRO_BIN = "nat_lang_pro/langpro_bin"
 RTE_PROB_DIR = "rte_problems"
 
 
@@ -71,7 +71,8 @@ def prepare_input_json(premises, hypothesis, parser):
     sentences_pl = []
     input = [(premise, "p") for premise in premises] + [(hypothesis, "h")]
 
-    for idx, (sentence, type_) in enumerate(input):
+    # indices should match the ccg indices
+    for idx, (sentence, type_) in enumerate(input, start=1): 
         tokenized = " ".join(nltk.word_tokenize(sentence))
         escaped = tokenized.replace("'", "\\'")
         sentences_escaped.append(escaped)
@@ -112,8 +113,12 @@ def process_proof(proof):
 
 
 def langpro_raw(goal):
-    # cmd = ['swipl', '-x', LANGPRO_EXE, goal]
-    cmd = "swipl -x {} {} ".format(LANGPRO_EXE, goal)
+    # cmd = ['swipl', '-x', LANGPRO_BIN, goal]
+    # specify langpro bin
+    global LANGPRO_BIN
+    if "bin" in request.json: LANGPRO_BIN = request.json["bin"] 
+
+    cmd = "swipl -x {} {} ".format(LANGPRO_BIN, goal)
     proof = run_tool(cmd)
     return "<doc>" + process_proof(proof) + "</doc>"
 
@@ -128,10 +133,16 @@ def test():
     hypothesis = request.json["hypothesis"]
     ral = request.json["ral"]
     senses = request.json["senses"]
+    # verbosity level
+    if "v" in request.json:
+        v = request.json["v"] 
+    else:
+        v = 0
 
     config = prepare_config(config, senses, ral)
     facts = prepare_input_json(premises, hypothesis, "cc")
     goal = get_goal(facts, config)
+    if v > 0: print(f"swipl goal={goal}")
     return langpro_raw(goal)
 
 
@@ -148,7 +159,7 @@ def process_user():
     results = []
     for parser in parsers:
         swipl_goal = get_goal(prepare_input(input, parser), config)
-        results.append(lp.run_langpro(parser, LANGPRO_EXE, swipl_goal))
+        results.append(lp.run_langpro(parser, LANGPRO_BIN, swipl_goal))
 
     return format_results(results)
 
@@ -171,7 +182,7 @@ def process_sick():
     results = []
     for parser in parsers:
         swipl_goal = "{0}_{1}.pl".format(goal, lp.str_map(parser, mode="ext"))
-        results.append(lp.run_langpro(parser, LANGPRO_EXE, swipl_goal))
+        results.append(lp.run_langpro(parser, LANGPRO_BIN, swipl_goal))
     return format_results(results)
 
 
@@ -187,6 +198,7 @@ def index():
 
 
 def main():
+    # app.run(debug=True)
     app.run()
 
 
