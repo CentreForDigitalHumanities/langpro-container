@@ -45,7 +45,7 @@ def prepare_config(config, senses, ral):
     wn_rel = "wn_ant, wn_der, wn_sim"
     senses = "" if senses == "all" else "ss({})".format(senses)
     allInt_aall = ", ".join(config) if config else ""
-    return f" parList([proof_tree, pr_kb, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
+    return f" parList([proof_tree, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
 
 
 def prepare_input(input, parser):
@@ -87,7 +87,8 @@ def prepare_input_json(premises, hypothesis, parser):
 
 def get_goal(facts, config):
     assert_cl = lp.assertz_clause(facts)
-    return ' -g "{0}, {1}, online_demo(1), halt"'.format(assert_cl, config)
+    # json args are text width, indent step size, and tab size 
+    return ' -g "{0}, {1}, online_demo(1, json(0,1,1)), halt"'.format(assert_cl, config)
 
 
 def format_results(results):
@@ -113,14 +114,9 @@ def process_proof(proof):
 
 
 def langpro_raw(goal):
-    # cmd = ['swipl', '-x', LANGPRO_BIN, goal]
-    # specify langpro bin
-    global LANGPRO_BIN
-    if "bin" in request.json: LANGPRO_BIN = request.json["bin"] 
-
     cmd = "swipl -x {} {} ".format(LANGPRO_BIN, goal)
     proof = run_tool(cmd)
-    return "<doc>" + process_proof(proof) + "</doc>"
+    return process_proof(proof)
 
 
 @app.route("/foo/", methods=["POST"])
