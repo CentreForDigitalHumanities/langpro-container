@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  langpro:
+    container_name: langpro
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./LangPro_demo:/langpro
+      - ../LangPro:/git_LangPro
+    command: "bash /langpro/start.sh"
