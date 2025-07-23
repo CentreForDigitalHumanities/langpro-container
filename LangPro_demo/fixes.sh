@@ -3,9 +3,15 @@
 chmod +x parsers/rebank_candc/rebank_dist/bin/*
 
 pushd parsers/rebank_candc/models/
-cp -fR pos_quotes pos
-cp -fR muc ner
-cp -fR chunk_quotes chunk
+if [ ! -d pos ]; then
+    cp -fR pos_quotes pos
+fi
+if [ ! -d ner ]; then
+    cp -fR muc ner
+fi
+if [ ! -d chunk ]; then
+    cp -fR chunk_quotes chunk
+fi
 popd
 
 # create langpro_bin binary on-fly because the binary
