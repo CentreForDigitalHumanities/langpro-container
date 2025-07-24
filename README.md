@@ -21,3 +21,9 @@ Curl example:
 ```
 curl 'http://localhost:8080/api/foo/' -d'{"prover_config":["allInt", "aall"], "premises":["Every man is working", "Everybody who is working has an expensive car"], "hypothesis":"Every man owns a car", "ral":200, "senses":"all"}' -H 'Content-Type: application/json'
 ```
+
+Python example with LangPro API:
+
+```
+python3 LangPro_demo/call.py
+```
