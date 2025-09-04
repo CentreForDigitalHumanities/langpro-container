@@ -9,4 +9,6 @@ services:
     volumes:
       - ./LangPro_demo:/langpro
       - ../LangPro:/git_LangPro
+    environment:
+      PYTHONPATH: /git_LangPro/python
     command: "bash /langpro/start.sh"

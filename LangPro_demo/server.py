@@ -1,7 +1,12 @@
-from flask import Flask, request
+import json
 import nltk
+from flask import Flask, request
+from functools import lru_cache
 
 import langpro_demo as lp
+
+from langpro_api import from_json, ccg_tree_to_tree, PrologTerm, Atom
+
 from util import run_tool
 
 app = Flask(__name__)
@@ -72,7 +77,7 @@ def prepare_input_json(premises, hypothesis, parser):
     input = [(premise, "p") for premise in premises] + [(hypothesis, "h")]
 
     # indices should match the ccg indices
-    for idx, (sentence, type_) in enumerate(input, start=1): 
+    for idx, (sentence, type_) in enumerate(input, start=1):
         tokenized = " ".join(nltk.word_tokenize(sentence))
         escaped = tokenized.replace("'", "\\'")
         sentences_escaped.append(escaped)
@@ -87,7 +92,7 @@ def prepare_input_json(premises, hypothesis, parser):
 
 def get_goal(facts, config):
     assert_cl = lp.assertz_clause(facts)
-    # json args are text width, indent step size, and tab size 
+    # json args are text width, indent step size, and tab size
     return ' -g "{0}, {1}, online_demo(1, json(0,1,1)), halt"'.format(assert_cl, config)
 
 
@@ -113,14 +118,33 @@ def process_proof(proof):
     return proof
 
 
+@lru_cache  # meant for speeding up results during development
 def langpro_raw(goal):
     cmd = "swipl -x {} {} ".format(LANGPRO_BIN, goal)
     proof = run_tool(cmd)
     return process_proof(proof)
 
 
-@app.route("/foo/", methods=["POST"])
-def test():
+def serialize_tree(tree: nltk.Tree, out=None):
+    if out is None:
+        out = dict()
+
+    if isinstance(tree, PrologTerm):
+        out["node"] = [str(arg) for arg in tree.args]
+        return out
+
+    out["node"] = tree.label()
+    out["children"] = []
+    for child in tree:
+        root = dict()
+        out["children"].append(root)
+        serialize_tree(child, root)
+
+    return out
+
+
+@app.route("/prove/", methods=["POST"])
+def parse_and_prove():
     if request.json is None:
         raise RuntimeError()
 
@@ -131,15 +155,23 @@ def test():
     senses = request.json["senses"]
     # verbosity level
     if "v" in request.json:
-        v = request.json["v"] 
+        v = request.json["v"]
     else:
         v = 0
 
     config = prepare_config(config, senses, ral)
     facts = prepare_input_json(premises, hypothesis, "cc")
     goal = get_goal(facts, config)
-    if v > 0: print(f"swipl goal={goal}")
-    return langpro_raw(goal)
+    if v > 0:
+        print(f"swipl goal={goal}")
+    raw = json.loads(langpro_raw(goal))
+
+    prob = raw["prob"]
+    ccg_trees = [from_json(entry["tree"]["ccg_tree"]) for entry in prob]
+
+    return dict(
+        ccg_trees=[serialize_tree(ccg_tree_to_tree(tree)) for tree in ccg_trees]
+    )
 
 
 @app.route("/user/")
@@ -194,8 +226,8 @@ def index():
 
 
 def main():
-    # app.run(debug=True)
-    app.run()
+    app.run(debug=True)
+    # app.run()
 
 
 if __name__ == "__main__":
