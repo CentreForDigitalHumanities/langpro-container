@@ -148,6 +148,7 @@ def parse_and_prove():
     if request.json is None:
         raise RuntimeError()
 
+    format = request.json.get("format", "raw")
     config = request.json["prover_config"]
     premises = request.json["premises"]
     hypothesis = request.json["hypothesis"]
@@ -165,6 +166,9 @@ def parse_and_prove():
     if v > 0:
         print(f"swipl goal={goal}")
     raw = json.loads(langpro_raw(goal))
+
+    if format == "raw":
+        return raw
 
     prob = raw["prob"]
     ccg_trees = [from_json(entry["tree"]["ccg_tree"]) for entry in prob]
