@@ -174,57 +174,6 @@ def parse_and_prove():
     )
 
 
-@app.route("/user/")
-def process_user():
-    config = lp.security_clean(request.args.getlist("prover_config"))
-    input = lp.security_clean(request.args.get("rte_problem", ""))
-    parsers = lp.security_clean(request.args.getlist("parser"))
-    ral = lp.security_clean(request.args.get("ral"))
-    senses = lp.security_clean(request.args.get("senses"))
-
-    config = prepare_config(config, senses, ral)
-
-    results = []
-    for parser in parsers:
-        swipl_goal = get_goal(prepare_input(input, parser), config)
-        results.append(lp.run_langpro(parser, LANGPRO_BIN, swipl_goal))
-
-    return format_results(results)
-
-
-@app.route("/sick/")
-def process_sick():
-    config = lp.security_clean(request.args.getlist("prover_config"))
-    parsers = lp.security_clean(request.args.getlist("parser"))
-    ral = lp.security_clean(request.args.get("ral"))
-    senses = lp.security_clean(request.args.get("senses"))
-    prob_id = lp.security_clean(request.args.get("prob_id"))
-
-    config = prepare_config(config, senses, ral)
-
-    data_name = "SICK_train_sen"
-    goal = ' -g "{0}, online_demo({1}), halt" -l {2}/{3}'.format(
-        config, prob_id, RTE_PROB_DIR, data_name
-    )
-
-    results = []
-    for parser in parsers:
-        swipl_goal = "{0}_{1}.pl".format(goal, lp.str_map(parser, mode="ext"))
-        results.append(lp.run_langpro(parser, LANGPRO_BIN, swipl_goal))
-    return format_results(results)
-
-
-@app.route("/fracas/")
-def process_fracas():
-    data_name = "fracas_sen_d"
-    return "fracas result"
-
-
-@app.route("/")
-def index():
-    return "hello from flask"
-
-
 def main():
     app.run(debug=True)
     # app.run()
