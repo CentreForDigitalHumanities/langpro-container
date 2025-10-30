@@ -15,10 +15,10 @@ fi
 popd
 
 # disable prolog GUI model
-pushd /git_LangPro
-sed -i "\|use_module(library(pce))|d" prolog/printer/gui_tree.pl
-sed -i "\|displayTree/3|d" prolog/prover/tt_nattableau.pl
-popd
+# pushd /git_LangPro
+# sed -i "\|use_module(library(pce))|d" prolog/printer/gui_tree.pl
+# sed -i "\|displayTree/3|d" prolog/prover/tt_nattableau.pl
+# popd
 
 # create langpro_bin binary on-fly because the binary
 # should be compatible with the local swipl version; no +x is needed.
