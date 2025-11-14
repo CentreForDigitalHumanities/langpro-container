@@ -41,6 +41,14 @@ sample_nli_problems = [
     {   'premises': [   'A woman is putting on lipstick'],
         'hypothesis':   'There is no woman putting on lipstick'
     },
+    {   'premises': [   'A hamster is jumping'],
+        'hypothesis':   'An animal is resting'
+        # needs kb="disj(jump, rest)" to be proved
+    },
+    {   'premises': [   'A guinea pig is snoring'],
+        'hypothesis':   'A small animal is sleeping'
+        # needs kb=["isa_wn(guinea pig, small animal)", "isa_wn(snore,sleep)"] to be proved
+    }
 ]
 
 #################### Argument parsing ##########################
@@ -59,6 +67,11 @@ parser.add_argument("-c", "--con",
 parser.add_argument("-i", "--pid",
     type=int, required=False, metavar='PROBLEM_ID',
     help=f"Problem id to solve, in range [0:{len(sample_nli_problems)-1}]"
+)
+# specifying knowledge for the problem
+parser.add_argument("-k", "--kb",
+    nargs='+', default=[], metavar='KNOWLEDGE',
+    help=f"A list of semantic relations that make up the knowledge base"
 )
 # optionally specifying representation type
 parser.add_argument("-r", "--rep",
@@ -84,17 +97,20 @@ elif args.pid is not None:
 else:
     parser.error("Either problem id or premises and conclusion must be specified")
 
-
 #################### Get LangPro output ##########################
 url = "http://localhost:8080/api/prove/"
 headers = {'Content-Type': 'application/json'}
-
 default_parameters = { 'prover_config': ['allInt', 'aall'],
                 'ral': 200,
+                'kb': [],
                 'senses': 'all',
                 'v': 1 }
+default_parameters['kb'] = args.kb
 
 query = {**nli_problem, **default_parameters}
+print(f"curl command:\ncurl '{url}' " +
+       " ".join([f"-H '{k}: {v}'" for k, v in headers.items()]) +
+      f" -d '{json.dumps(query)}'")
 response = requests.post(url, headers=headers, data=json.dumps(query))
 
 print("Status Code:", response.status_code)

@@ -1,4 +1,5 @@
 import json
+import re
 import nltk
 from flask import Flask, request
 from functools import lru_cache
@@ -52,6 +53,22 @@ def prepare_config(config, senses, ral):
     allInt_aall = ", ".join(config) if config else ""
     return f" parList([proof_tree, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
 
+def str_to_quoted_atom(s):
+    return  "'" + s.replace("'", "\\'") + "'"
+
+def prepare_kb(kb):
+    def prepare_rel(rel):
+        assert isinstance(rel, str)
+        pattern = re.compile(r"(isa_wn|ant_wn|disj)\(([^,]+),\s*([^,]+)\)")
+        if (m := pattern.match(rel.strip())):
+            pred, arg1, arg2 = m.groups()
+            return f"{pred}({str_to_quoted_atom(arg1)}, {str_to_quoted_atom(arg2)})"
+        else:
+            raise ValueError(f"Cannot parse relation: {rel}")
+       
+    rels = [prepare_rel(rel) for rel in kb]
+    return "[" + ', '.join(rels) + "]"
+
 
 def prepare_input(input, parser):
     defs = (
@@ -90,10 +107,10 @@ def prepare_input_json(premises, hypothesis, parser):
     return "\n".join(defs) + "\n".join(sentences_pl) + derivations
 
 
-def get_goal(facts, config):
+def get_goal(facts, kb, config):
     assert_cl = lp.assertz_clause(facts)
     # json args are text width, indent step size, and tab size
-    return ' -g "{0}, {1}, online_demo(1, json(0,1,1)), halt"'.format(assert_cl, config)
+    return ' -g "{0}, {1}, online_demo(1, {2}, json(0,1,1)), halt"'.format(assert_cl, config, kb)
 
 
 def format_results(results):
@@ -154,6 +171,8 @@ def parse_and_prove():
     hypothesis = request.json["hypothesis"]
     ral = request.json["ral"]
     senses = request.json["senses"]
+    kb = request.json.get("kb", [])
+    # print("keys", request.json.keys())
     # verbosity level
     if "v" in request.json:
         v = request.json["v"]
@@ -162,7 +181,8 @@ def parse_and_prove():
 
     config = prepare_config(config, senses, ral)
     facts = prepare_input_json(premises, hypothesis, "cc")
-    goal = get_goal(facts, config)
+    kb = prepare_kb(kb)
+    goal = get_goal(facts, kb, config)
     if v > 0:
         print(f"swipl goal={goal}")
     raw = json.loads(langpro_raw(goal))
