@@ -9,6 +9,7 @@ from nltk import Tree, TreePrettyPrinter
 import colorama
 from colorama import Fore, Back, Style
 colorama.init(autoreset=True) # resets colors for each print
+error_sty = Style.BRIGHT + Fore.RED
 header_sty = Style.BRIGHT + Fore.BLUE + Back.WHITE
 compact_style = Style.BRIGHT + Fore.WHITE + Back.GREEN
 str_style = Style.BRIGHT + Fore.WHITE + Back.BLACK
@@ -48,16 +49,16 @@ parser = argparse.ArgumentParser(description=
 
 parser.add_argument("-p", "--pre",
     nargs='+', required=False, metavar='PREMISE',
-    help=f"Problem id to solve from [0:{len(sample_nli_problems)}]"
+    help=f"Premises of the NLI problem (one or more strings)"
 )
 parser.add_argument("-c", "--con",
     type=str, required=False, metavar='CONCLUSION',
-    help=f"Problem id to solve from [0:{len(sample_nli_problems)}]"
+    help=f"Conclusion of the NLI problem (one string)"
 )
 # specifying problem id of the predefined toy problems
 parser.add_argument("-i", "--pid",
     type=int, required=False, metavar='PROBLEM_ID',
-    help=f"Problem id to solve from [0:{len(sample_nli_problems)}]"
+    help=f"Problem id to solve, in range [0:{len(sample_nli_problems)-1}]"
 )
 # optionally specifying representation type
 parser.add_argument("-r", "--rep",
@@ -77,6 +78,8 @@ if args.pre and args.con:
     if args.pid is not None:
         print("Using custom problem and ignoring specified problem id")
 elif args.pid is not None:
+    if args.pid >= len(sample_nli_problems):
+        parser.error(f"Problem id must be in [0:{len(sample_nli_problems)-1}]")
     nli_problem = sample_nli_problems[args.pid]
 else:
     parser.error("Either problem id or premises and conclusion must be specified")
@@ -104,7 +107,9 @@ try:
     if args.verbose > 0:
         print(f"response.text:\n{response.text[:100]}\n\n")
 except:
-    print(f"response.text:\n{response.text[:100]}\n\n")
+    print("Failed to parse response as JSON.")
+    print(f"{error_sty}Error: the problem was not parsed properly as the response is not JSON", file=sys.stderr)
+    sys.exit(1)
     raise
 
 #################### Printing representations ##########################
@@ -166,4 +171,4 @@ if args.rep in ["proof", "all"]:
     for label, proof in lab_proofs:
         print(f"\n\t{header_sty}Proof tree for {label}")
         print(f"{pretty_style}{TreePrettyPrinter(proof).text()}")
-        #TODO add rule app and closure info to proof trees
+        #TODO add closure info to proof trees
