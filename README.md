@@ -19,7 +19,7 @@ docker run -it -p 8080:80 --rm -v $(pwd)/LangPro_demo:/langpro  -v $(pwd)/../Lan
 Curl example:
 
 ```
-curl 'http://localhost:8080/api/foo/' -d'{"prover_config":["allInt", "aall"], "premises":["Every man is working", "Everybody who is working has an expensive car"], "hypothesis":"Every man owns a car", "ral":200, "senses":"all"}' -H 'Content-Type: application/json'
+curl 'http://localhost:8080/api/prove/' -d'{"prover_config":["allInt", "aall"], "premises":["Every man is working", "Everybody who is working has an expensive car"], "hypothesis":"Every man owns a car", "ral":200, "senses":"all"}' -H 'Content-Type: application/json'
 ```
 
 Python example with LangPro API:
