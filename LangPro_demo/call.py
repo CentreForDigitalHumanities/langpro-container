@@ -42,7 +42,7 @@ sample_nli_problems = [
         'hypothesis':   'There is no woman putting on lipstick'
     },
     {   'premises': [   'A hamster is jumping'],
-        'hypothesis':   'An animal is resting'
+        'hypothesis':   'A hamster is resting'
         # needs kb="disj(jump, rest)" to be proved
     },
     {   'premises': [   'A guinea pig is snoring'],
