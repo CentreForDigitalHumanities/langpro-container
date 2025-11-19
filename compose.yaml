@@ -12,4 +12,3 @@ services:
     environment:
       PYTHONPATH: /git_LangPro/python
     command: "bash /langpro/start.sh"
-    user: www-data
