@@ -16,6 +16,8 @@ RUN apt install -y xsltproc
 RUN apt install -y default-jre-headless
 
 VOLUME /langpro
+
+RUN rm /etc/apache2/sites-enabled/*
 COPY httpd.conf /etc/apache2/sites-enabled/langpro.conf
 
 RUN a2enmod cgid proxy_http
