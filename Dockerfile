@@ -17,7 +17,7 @@ RUN apt install -y default-jre-headless
 
 VOLUME /langpro
 
-RUN chmod 777 /var/log/apache2
+RUN chmod -R 777 /var/log/apache2
 RUN rm /etc/apache2/sites-enabled/*
 
 COPY httpd.conf /etc/apache2/sites-enabled/langpro.conf
