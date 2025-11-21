@@ -3,4 +3,4 @@
 bash fixes.sh
 apachectl -k start
 export PYTHONPATH="/git_LangPro/python:$PYTHONPATH"
-su www-data python3 server.py
+su -p www-data python3 server.py
