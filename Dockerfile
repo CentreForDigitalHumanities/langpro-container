@@ -21,6 +21,8 @@ COPY httpd.conf /etc/apache2/sites-enabled/langpro.conf
 RUN a2enmod cgid proxy_http
 
 RUN apt install -y tmux
+RUN groupadd -g 33 www-data && \
+    useradd -m -u 33 -g www-data www-data
 
 EXPOSE 80
 WORKDIR /langpro
