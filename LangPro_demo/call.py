@@ -80,6 +80,13 @@ parser.add_argument("-r", "--rep",
     help=f"Choosing which particular representation to print",
     default="all"
 )
+# optionally specifying parser
+parser.add_argument("--parser",
+    choices=["cc", "easyccg", "re-cc"],
+    metavar='PARSER',
+    help=f"Choosing which parser to use",
+    default="cc"
+)
 parser.add_argument("-v", "--verbose",
     type=int, default=0, metavar='VERBOSITY',
     help=f"Verbosity level of reporting"
@@ -106,6 +113,7 @@ default_parameters = { 'prover_config': ['allInt', 'aall'],
                 'senses': 'all',
                 'v': 1 }
 default_parameters['kb'] = args.kb
+default_parameters['parser'] = args.parser
 
 query = {**nli_problem, **default_parameters}
 print(f"curl command:\ncurl '{url}' " +

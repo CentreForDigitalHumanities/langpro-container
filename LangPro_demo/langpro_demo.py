@@ -359,21 +359,37 @@ def sent_preprocess(sen):
     return sen
 
 #########################
-def ccg_parsing(parser, sen):
+def ccg_parsing(parser, sen, v=0):
     '''parse the sentence in prolog format
        with a specified ccg parser
     '''
     if parser == 'easyccg':
-        return easyccg_parsing(sen)
+        return easyccg_parsing(sen, v=v)
     elif parser == 'cc':
         # append newline to make sure the last sentence is parsed
-        return cc_parsing(sen + '\n')
+        return cc_parsing(sen + '\n', v=v)
+    elif parser == 're-cc':
+        # append newline to make sure the last sentence is parsed
+        return re_cc_parsing(sen + '\n', v=v)
     else:
         raise RuntimeError('Unknown parser: {}').format(parser)
 
 #########################
-def cc_parsing(sen):
+def cc_parsing(sen, v=0):
     '''parse with C&C with non-rebanked model
+    '''
+    sen_esc = sen.replace('"', '\\"')
+    path = 'parsers/candc'
+    cmd = ('{0}/candc/bin/candc  --models {0}/models/models '
+           '--candc-printer boxer  --candc-parser-noisy_rules=false'
+           ).format(path)
+    if v:
+        print(f"CCG parsing command:\n{cmd}")
+    return run_tool(cmd, sen_esc)
+
+#########################
+def re_cc_parsing(sen, v=0):
+    '''parse with C&C with a rebanked model
     '''
     sen_esc = sen.replace('"', '\\"')
     path = 'parsers/rebank_candc'
@@ -381,10 +397,12 @@ def cc_parsing(sen):
            '--candc-super {0}/super  --candc-parser {0}/model_hybrid '
            '--candc-printer boxer  --candc-parser-noisy_rules=false'
            ).format(path)
+    if v:
+        print(f"rebanked CCG parsing command:\n{cmd}")
     return run_tool(cmd, sen_esc)
 
 #########################
-def easyccg_parsing(sen):
+def easyccg_parsing(sen, v=0):
     '''parse with EasyCCG with non-rebanked model
     '''
     cc_bin = 'parsers/rebank_candc/rebank_dist/bin'
@@ -400,11 +418,14 @@ def easyccg_parsing(sen):
     sen_esc = sen.replace('"', '\\"')
     cmd = 'echo "{0}" | {1} | {2} | {3}'.format(
           sen_esc, pos_ner, easy_java, perl)
-
+    if v:
+        print(f"EasyCCG parsing command:\n{cmd}")
     out = run_tool(cmd)
     assert_cl = assertz_clause(out)
     cmd = 'swipl -f {0} -g "{1}, prolog_to_boxer_stdout, halt"'.format(
           prolog_to_boxer, assert_cl)
+    if v:
+        print(f"swipl conversion command:\n{cmd}")
     out = run_tool(cmd)
     return out
 
