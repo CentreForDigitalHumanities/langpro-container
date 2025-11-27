@@ -27,6 +27,10 @@ curl 'http://localhost:8080/api/prove/' -H 'Content-Type: application/json' -d '
 
 # Example with a knowledge about disjoint/incompatible relation
 curl 'http://localhost:8080/api/prove/' -H 'Content-Type: application/json' -d '{"premises": ["A hamster is jumping"], "hypothesis": "A hamster is resting", "prover_config": ["allInt", "aall"], "ral": 200, "kb": ["disj(rest,jump)"], "senses": "all"}'
+
+# Specifying the parser argument
+# note that certain parsers might fail to parse sentences of certain problems, e.g., "re-cc" fails for this input problem  
+curl 'http://localhost:8080/api/prove/' -H 'Content-Type: application/json' -d '{"premises": ["A woman is putting on lipstick"], "hypothesis": "There is no woman putting on lipstick", "prover_config": ["allInt", "aall"], "ral": 200, "kb": [], "senses": "all", "parser": "cc"}'
 ```
 
 Python example with LangPro API:
