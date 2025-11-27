@@ -82,7 +82,7 @@ def prepare_input(input, parser):
     return defs + sentences_pl + derivations
 
 
-def prepare_input_json(premises, hypothesis, parser):
+def prepare_input_json(premises, hypothesis, parser, v=0):
     defs = (
         ":- dynamic sen_id/5.\n"
         ":- multifile sen_id/5.\n"
@@ -102,7 +102,7 @@ def prepare_input_json(premises, hypothesis, parser):
             "sen_id({0}, 1, '{1}', 'nil', '{2}').\n".format(idx, type_, escaped)
         )
 
-    derivations = lp.ccg_parsing(parser, "\n".join(sentences_escaped))
+    derivations = lp.ccg_parsing(parser, "\n".join(sentences_escaped), v=v)
 
     return "\n".join(defs) + "\n".join(sentences_pl) + derivations
 
@@ -166,7 +166,8 @@ def parse_and_prove():
         raise RuntimeError()
 
     format = request.json.get("format", "raw")
-    config = request.json["prover_config"]
+    parser = request.json.get("parser", "cc")
+    prover_config = request.json["prover_config"]
     premises = request.json["premises"]
     hypothesis = request.json["hypothesis"]
     ral = request.json["ral"]
@@ -179,10 +180,10 @@ def parse_and_prove():
     else:
         v = 0
 
-    config = prepare_config(config, senses, ral)
-    facts = prepare_input_json(premises, hypothesis, "cc")
+    prover_config = prepare_config(prover_config, senses, ral)
+    facts = prepare_input_json(premises, hypothesis, parser, v=v)
     kb = prepare_kb(kb)
-    goal = get_goal(facts, kb, config)
+    goal = get_goal(facts, kb, prover_config)
     if v > 0:
         print(f"swipl goal={goal}")
     raw = json.loads(langpro_raw(goal))
