@@ -1,6 +1,3 @@
 [submodule "LangPro_demo/candc"]
 	path = LangPro_demo/candc
 	url = https://github.com/chrzyki/candc.git
-[submodule "LangPro_demo/parsers/candc"]
-	path = LangPro_demo/parsers/candc
-	url = https://github.com/chrzyki/candc.git
