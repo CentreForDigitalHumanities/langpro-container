@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   langpro:
     container_name: langpro
