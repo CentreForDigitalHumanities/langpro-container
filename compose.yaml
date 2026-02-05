@@ -2,6 +2,7 @@ services:
   langpro:
     container_name: langpro
     build: .
+    restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
@@ -10,4 +11,3 @@ services:
     environment:
       PYTHONPATH: /git_LangPro/python
     command: "bash /langpro/start.sh"
-    user: www-data
