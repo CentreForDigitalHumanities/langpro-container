@@ -1,5 +1,9 @@
 # langpro-container
 
+Before cloning the repository, install and enable [git-lfs][git-lfs]. If you already cloned the repository before seeing this instruction, keep reading.
+
+[git-lfs]: https://git-lfs.com/
+
 After cloning the repository, run the following commands once in order to obtain a local copy of LangPro:
 
 ``` sh
@@ -7,6 +11,8 @@ git submodule init
 # customize clone URL in .git/config before proceeding (if needed)
 git submodule update
 ```
+
+If you installed git-lfs only after cloning this repository, now run `git lfs pull`. You need to do this only once.
 
 After pulling in new changes that update to a later commit of LangPro, run `git submodule update` again.
 
