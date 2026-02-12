@@ -383,10 +383,6 @@ def cc_parsing(sen, v=0):
     cmd = ('{0}/candc/bin/candc  --models {0}/models/models '
            '--candc-printer boxer  --candc-parser-noisy_rules=false'
            ).format(path)
-    import os
-    import sys
-    print(f"CCG parsing command:\n{cmd}", file=sys.stderr)
-    print(f"CWD: {os.getcwd()}", file=sys.stderr)
     if v:
         print(f"CCG parsing command:\n{cmd}")
     return run_tool(cmd, sen_esc)
