@@ -380,7 +380,7 @@ def cc_parsing(sen, v=0):
     '''
     sen_esc = sen.replace('"', '\\"')
     path = 'parsers/candc'
-    cmd = ('{0}/candc/bin/candc  --models {0}/models/models '
+    cmd = ('{0}/candc/bin/candc  --models {0}/models '
            '--candc-printer boxer  --candc-parser-noisy_rules=false'
            ).format(path)
     import os
