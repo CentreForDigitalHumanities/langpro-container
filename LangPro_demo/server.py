@@ -65,7 +65,7 @@ def prepare_kb(kb):
             return f"{pred}({str_to_quoted_atom(arg1)}, {str_to_quoted_atom(arg2)})"
         else:
             raise ValueError(f"Cannot parse relation: {rel}")
-       
+
     rels = [prepare_rel(rel) for rel in kb]
     return "[" + ', '.join(rels) + "]"
 
@@ -162,6 +162,7 @@ def serialize_tree(tree: nltk.Tree, out=None):
 
 @app.route("/prove/", methods=["POST"])
 def parse_and_prove():
+    import pdb; pdb.set_trace()
     if request.json is None:
         raise RuntimeError()
 
