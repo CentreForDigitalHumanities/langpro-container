@@ -5,27 +5,34 @@ chmod +x parsers/rebank_candc/rebank_dist/bin/*
 # copy models instead of symlinks
 pushd parsers/rebank_candc/models/
 if [ ! -d pos ]; then
+    rm -rf pos
     cp -fR pos_quotes pos
 fi
 if [ ! -d ner ]; then
+    rm -rf ner
     cp -fR muc ner
 fi
 if [ ! -d chunk ]; then
+    rm -rf chunk
     cp -fR chunk_quotes chunk
 fi
 popd
 
 pushd parsers/candc/models/models
 if [ ! -d pos ]; then
+    rm -rf pos
     cp -fR pos_quotes pos
 fi
 if [ ! -d ner ]; then
+    rm -rf ner
     cp -fR muc ner
 fi
 if [ ! -d chunk ]; then
+    rm -rf chunk
     cp -fR chunk_quotes chunk
 fi
 if [ ! -d super ]; then
+    rm -rf super
     cp -fR super_quotes super
 fi
 popd
