@@ -6,7 +6,7 @@ from functools import lru_cache
 
 import langpro_demo as lp
 
-from langpro_api import from_json, ccg_tree_to_tree, PrologTerm, Atom
+from langpro_api import parse_ccg_tree, PrologTerm, Atom
 
 from util import run_tool
 
@@ -192,10 +192,10 @@ def parse_and_prove():
         return raw
 
     prob = raw["prob"]
-    ccg_trees = [from_json(entry["tree"]["ccg_tree"]) for entry in prob]
+    ccg_trees = [entry["tree"]["ccg_tree"] for entry in prob]
 
     return dict(
-        ccg_trees=[serialize_tree(ccg_tree_to_tree(tree)) for tree in ccg_trees]
+        ccg_trees=[serialize_tree(parse_ccg_tree(tree)) for tree in ccg_trees]
     )
 
 
