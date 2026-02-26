@@ -46,3 +46,7 @@ backend/sqlite.db
 
 # Aethel dataset
 aethel.pickle
+
+# Copies from within the C&C models
+/LangPro_demo/parsers/candc/models/models/pos/
+/LangPro_demo/parsers/candc/models/models/super/
