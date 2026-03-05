@@ -6,7 +6,9 @@ from functools import lru_cache
 
 import langpro_demo as lp
 
-from langpro_api import parse_ccg_tree, PrologTerm, Atom
+from langpro_api import (
+    parse_ccg_tree, parse_info_proof, PrologTerm, Atom
+)
 
 from util import run_tool
 
@@ -65,7 +67,7 @@ def prepare_kb(kb):
             return f"{pred}({str_to_quoted_atom(arg1)}, {str_to_quoted_atom(arg2)})"
         else:
             raise ValueError(f"Cannot parse relation: {rel}")
-       
+
     rels = [prepare_rel(rel) for rel in kb]
     return "[" + ', '.join(rels) + "]"
 
@@ -195,7 +197,11 @@ def parse_and_prove():
     ccg_trees = [entry["tree"]["ccg_tree"] for entry in prob]
 
     return dict(
-        ccg_trees=[serialize_tree(parse_ccg_tree(tree)) for tree in ccg_trees]
+        ccg_trees=[serialize_tree(parse_ccg_tree(tree)) for tree in ccg_trees],
+        proofs={
+            key: serialize_tree(parse_info_proof(value))
+            for key, value in raw["proofs"].items()
+        }
     )
 
 
