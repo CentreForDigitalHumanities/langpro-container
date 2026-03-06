@@ -152,6 +152,10 @@ def serialize_tree(tree: nltk.Tree, out=None):
         out["node"] = [str(arg) for arg in tree.args]
         return out
 
+    if type(tree) == str:
+        out["node"] = tree
+        return out
+
     out["node"] = tree.label()
     out["children"] = []
     for child in tree:
