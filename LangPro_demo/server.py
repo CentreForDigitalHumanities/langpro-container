@@ -199,16 +199,16 @@ def parse_and_prove():
     if format == "raw":
         return raw
 
-    # TODO: Fix serialization of CCG Term, Corrected CCG Term and LLF.
+    # TODO: Harmonise NLTK tree conversion of parse_ccg_tree and parse_term.
 
     ccg_parses = [
         {
             "sentence": entry["sen"],
             "ccg_trees": {
                 "ccg_tree": serialize_tree(parse_ccg_tree(entry["tree"]["ccg_tree"])),
-                # "ccg_term": serialize_tree(parse_term(entry["tree"]["ccg_term"]).tree()),
-                # "corr_term": serialize_tree(parse_term(entry["tree"]["corr_term"]).tree()),
-                # "llf": serialize_tree(parse_term(entry["tree"]["llf"]).tree()),
+                "ccg_term": serialize_tree(parse_term(entry["tree"]["ccg_term"]).tree()),
+                "corr_term": serialize_tree(parse_term(entry["tree"]["corr_term"]).tree()),
+                "llf": serialize_tree(parse_term(entry["tree"]["llf"]).tree()),
             },
         }
         for entry in raw["prob"]
