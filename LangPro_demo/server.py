@@ -199,21 +199,23 @@ def parse_and_prove():
     if format == "raw":
         return raw
 
+    # TODO: Fix serialization of CCG Term, Corrected CCG Term and LLF.
+
     ccg_parses = [
         {
             "sentence": entry["sen"],
             "ccg_trees": {
                 "ccg_tree": serialize_tree(parse_ccg_tree(entry["tree"]["ccg_tree"])),
-                "ccg_term": serialize_tree(parse_term(entry["tree"]["ccg_term"])),
-                "corr_term": serialize_tree(parse_term(entry["tree"]["corr_term"])),
-                "llf": serialize_tree(parse_term(entry["tree"]["llf"])),
+                # "ccg_term": serialize_tree(parse_term(entry["tree"]["ccg_term"]).tree()),
+                # "corr_term": serialize_tree(parse_term(entry["tree"]["corr_term"]).tree()),
+                # "llf": serialize_tree(parse_term(entry["tree"]["llf"]).tree()),
             },
         }
         for entry in raw["prob"]
     ]
 
     return dict(
-        ccg_trees=ccg_parses,
+        ccg_parses=ccg_parses,
         proofs={
             key: serialize_tree(parse_info_proof(value))
             for key, value in raw["proofs"].items()
