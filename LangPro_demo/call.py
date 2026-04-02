@@ -85,7 +85,7 @@ parser.add_argument("--parser",
     choices=["cc", "easyccg", "re-cc"],
     metavar='PARSER',
     help=f"Choosing which parser to use",
-    default="cc"
+    default="easyccg"
 )
 parser.add_argument("-v", "--verbose",
     type=int, default=0, metavar='VERBOSITY',
