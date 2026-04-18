@@ -29,7 +29,7 @@ curl 'http://localhost:8080/api/prove/' -H 'Content-Type: application/json' -d '
 curl 'http://localhost:8080/api/prove/' -H 'Content-Type: application/json' -d '{"premises": ["A hamster is jumping"], "hypothesis": "A hamster is resting", "prover_config": ["allInt", "aall"], "ral": 200, "kb": ["disj(rest,jump)"], "senses": "all"}'
 
 # Specifying the parser argument
-# note that certain parsers might fail to parse sentences of certain problems, e.g., "re-cc" fails for this input problem  
+# note that certain parsers might fail to parse sentences of certain problems, e.g., "re-cc" fails for this input problem
 curl 'http://localhost:8080/api/prove/' -H 'Content-Type: application/json' -d '{"premises": ["A woman is putting on lipstick"], "hypothesis": "There is no woman putting on lipstick", "prover_config": ["allInt", "aall"], "ral": 200, "kb": [], "senses": "all", "parser": "cc"}'
 ```
 
@@ -38,12 +38,12 @@ Python example with LangPro API:
 ```
 # make sure to have LangPro cloned in the same dir as langpro-container
 # display only CCG trees for a pre-specified sample problem with id 1
-python3 LangPro_demo/call.py -i 1 -r tree
+python3 LangPro_demo/call.py -i 1 -r ccg_tree
 
-# display trees/terms and proofs for a custom NLI problem 
+# display trees/terms and proofs for a custom NLI problem
 python3 LangPro_demo/call.py -p "Some cats are hungry" "No cat is sleeping" -c "There is a hungry cat that is not sleeping"
 
-# display proofs for a custom NLI problem with input knowledge 
+# display proofs for a custom NLI problem with input knowledge
 python3 LangPro_demo/call.py -r proof -p "A guinea pig is snoring" -c "A small animal is sleeping" -k "isa_wn(guinea pig, small animal)" "isa_wn(snore,sleep)"
 
 # for help
