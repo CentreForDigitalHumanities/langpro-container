@@ -11,6 +11,9 @@ pip-log.txt
 pip-delete-this-directory.txt
 *.log
 
+# Binaries that are compiled during runtime
+LangPro_demo/nat_lang_pro/langpro_bin
+
 # Unit test / coverage reports
 .coverage
 .coverage.*
