@@ -1,6 +1,7 @@
 import json
 import re
 import nltk
+from nltk import Tree
 from flask import Flask, request
 from functools import lru_cache
 
@@ -65,7 +66,7 @@ def prepare_kb(kb):
             return f"{pred}({str_to_quoted_atom(arg1)}, {str_to_quoted_atom(arg2)})"
         else:
             raise ValueError(f"Cannot parse relation: {rel}")
-       
+
     rels = [prepare_rel(rel) for rel in kb]
     return "[" + ', '.join(rels) + "]"
 
@@ -142,22 +143,37 @@ def langpro_raw(goal):
     return process_proof(proof)
 
 
-def serialize_tree(tree: nltk.Tree, out=None):
+def serialize_tree(tree: (Tree|PrologTerm|str), out=None):
+    """ serialize nltk tree or PrologTerm to a dict
+    """
     if out is None:
         out = dict()
 
     if isinstance(tree, PrologTerm):
-        out["node"] = [str(arg) for arg in tree.args]
+        if hasattr(tree, "args"):
+            out["node"] = [str(arg) for arg in tree.args]
+        elif hasattr(tree, "value"):
+            out["node"] = tree.value
+        else:
+            raise ValueError(f"Unknown PrologTerm structure: {repr(tree)}")
         return out
 
-    out["node"] = tree.label()
-    out["children"] = []
-    for child in tree:
-        root = dict()
-        out["children"].append(root)
-        serialize_tree(child, root)
+    if isinstance(tree, Tree):
+        out["node"] = tree.label()
+        out["children"] = []
+        for child in tree:
+            root = dict()
+            out["children"].append(root)
+            serialize_tree(child, root)
+        return out
 
-    return out
+    if isinstance(tree, str):
+        return tree
+
+    raise TypeError(
+        f"Expected Tree or PrologTerm, got "
+        f"{type(tree).__name__}: {repr(tree)[:50]}"
+    )
 
 
 @app.route("/prove/", methods=["POST"])
@@ -165,7 +181,7 @@ def parse_and_prove():
     if request.json is None:
         raise RuntimeError()
 
-    format = request.json.get("format", "raw")
+    fmt = request.json.get("format", "raw")
     parser = request.json.get("parser", "cc")
     prover_config = request.json["prover_config"]
     premises = request.json["premises"]
@@ -188,7 +204,7 @@ def parse_and_prove():
         print(f"swipl goal={goal}")
     raw = json.loads(langpro_raw(goal))
 
-    if format == "raw":
+    if fmt == "raw":
         return raw
 
     prob = raw["prob"]
