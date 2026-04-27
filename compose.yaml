@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   langpro:
     container_name: langpro
@@ -9,7 +7,7 @@ services:
       - "8080:80"
     volumes:
       - ./LangPro_demo:/langpro
-      - ../LangPro:/git_LangPro
+      - ./LangPro:/git_LangPro
     environment:
       PYTHONPATH: /git_LangPro/python
     command: "bash /langpro/start.sh"

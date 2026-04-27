@@ -6,7 +6,7 @@ from functools import lru_cache
 
 import langpro_demo as lp
 
-from langpro_api import from_json, ccg_tree_to_tree, PrologTerm, Atom
+from langpro_api import parse_ccg_tree, parse_info_proof, parse_term, PrologTerm
 
 from util import run_tool
 
@@ -53,21 +53,23 @@ def prepare_config(config, senses, ral):
     allInt_aall = ", ".join(config) if config else ""
     return f" parList([proof_tree, {eff_cr}, {wn_rel}, ral({ral}), {senses} {allInt_aall}])"
 
+
 def str_to_quoted_atom(s):
-    return  "'" + s.replace("'", "\\'") + "'"
+    return "'" + s.replace("'", "\\'") + "'"
+
 
 def prepare_kb(kb):
     def prepare_rel(rel):
         assert isinstance(rel, str)
         pattern = re.compile(r"(isa_wn|ant_wn|disj)\(([^,]+),\s*([^,]+)\)")
-        if (m := pattern.match(rel.strip())):
+        if m := pattern.match(rel.strip()):
             pred, arg1, arg2 = m.groups()
             return f"{pred}({str_to_quoted_atom(arg1)}, {str_to_quoted_atom(arg2)})"
         else:
             raise ValueError(f"Cannot parse relation: {rel}")
-       
+
     rels = [prepare_rel(rel) for rel in kb]
-    return "[" + ', '.join(rels) + "]"
+    return "[" + ", ".join(rels) + "]"
 
 
 def prepare_input(input, parser):
@@ -110,7 +112,9 @@ def prepare_input_json(premises, hypothesis, parser, v=0):
 def get_goal(facts, kb, config):
     assert_cl = lp.assertz_clause(facts)
     # json args are text width, indent step size, and tab size
-    return ' -g "{0}, {1}, online_demo(1, {2}, json(0,1,1)), halt"'.format(assert_cl, config, kb)
+    return ' -g "{0}, {1}, online_demo(1, {2}, json(0,1,1)), halt"'.format(
+        assert_cl, config, kb
+    )
 
 
 def format_results(results):
@@ -148,6 +152,10 @@ def serialize_tree(tree: nltk.Tree, out=None):
 
     if isinstance(tree, PrologTerm):
         out["node"] = [str(arg) for arg in tree.args]
+        return out
+
+    if type(tree) == str:
+        out["node"] = tree
         return out
 
     out["node"] = tree.label()
@@ -191,11 +199,27 @@ def parse_and_prove():
     if format == "raw":
         return raw
 
-    prob = raw["prob"]
-    ccg_trees = [from_json(entry["tree"]["ccg_tree"]) for entry in prob]
+    # TODO: Harmonise NLTK tree conversion of parse_ccg_tree and parse_term.
+
+    ccg_parses = [
+        {
+            "sentence": entry["sen"],
+            "ccg_trees": {
+                "ccg_tree": serialize_tree(parse_ccg_tree(entry["tree"]["ccg_tree"])),
+                "ccg_term": serialize_tree(parse_term(entry["tree"]["ccg_term"]).tree()),
+                "corr_term": serialize_tree(parse_term(entry["tree"]["corr_term"]).tree()),
+                "llf": serialize_tree(parse_term(entry["tree"]["llf"]).tree()),
+            },
+        }
+        for entry in raw["prob"]
+    ]
 
     return dict(
-        ccg_trees=[serialize_tree(ccg_tree_to_tree(tree)) for tree in ccg_trees]
+        ccg_parses=ccg_parses,
+        proofs={
+            key: serialize_tree(parse_info_proof(value))
+            for key, value in raw["proofs"].items()
+        },
     )
 
 
