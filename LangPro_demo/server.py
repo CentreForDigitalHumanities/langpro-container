@@ -164,11 +164,7 @@ def serialize_tree(tree: (Tree|PrologTerm|str), out=None):
 
     if isinstance(tree, Tree):
         out["node"] = tree.label()
-        out["children"] = []
-        for child in tree:
-            root = dict()
-            out["children"].append(root)
-            serialize_tree(child, root)
+        out["children"] = [serialize_tree(child) for child in tree]
         return out
 
     if isinstance(tree, str):
