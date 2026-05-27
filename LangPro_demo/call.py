@@ -75,17 +75,18 @@ parser.add_argument("-k", "--kb",
 )
 # optionally specifying representation type
 parser.add_argument("-r", "--rep",
-    choices=["tree", "term", "corr_term", "llf", "proof", "all"],
+    nargs="+",
+    choices=["ccg_tree", "ccg_term", "corr_term", "llf", "proof"],
     metavar='REPRESENTATION',
     help=f"Choosing which particular representation to print",
-    default="all"
+    default=["ccg_tree", "ccg_term", "corr_term", "llf", "proof"]
 )
 # optionally specifying parser
 parser.add_argument("--parser",
     choices=["cc", "easyccg", "re-cc"],
     metavar='PARSER',
     help=f"Choosing which parser to use",
-    default="cc"
+    default="easyccg"
 )
 parser.add_argument("-v", "--verbose",
     type=int, default=0, metavar='VERBOSITY',
@@ -150,7 +151,7 @@ for rel in parse_kb(output['kb']):
     print(rel)
 
 # print CCG derivations for all sentences
-if args.rep in ["tree", "all"]:
+if "ccg_tree" in args.rep:
     print(f"\n{header_sty}CCG derivation per sentence")
     ccg_trees = [ parse_ccg_tree(i['tree']['ccg_tree']) for i in output['prob'] ]
     for i in ccg_trees:
@@ -158,7 +159,7 @@ if args.rep in ["tree", "all"]:
         print(f"{pretty_style}{TreePrettyPrinter(i).text()}")
 
 # print CCG terms for all sentences
-if args.rep in ["term", "all"]:
+if "ccg_term" in args.rep:
     print(f"\n{header_sty}CCG term per sentence")
     ccg_terms = [ parse_term(i['tree']['ccg_term']) for i in output['prob'] ]
     for i in ccg_terms:
@@ -168,7 +169,7 @@ if args.rep in ["term", "all"]:
         print(f"{pretty_style}{i.pretty_printer().text()}")
 
 # print Corrected terms (i.e. they are proper lambda terms) for all sentences
-if args.rep in ["corr_term", "all"]:
+if "corr_term" in args.rep:
     print(f"\n{header_sty}Corrected term per sentence")
     corr_terms = [ parse_term(i['tree']['corr_term']) for i in output['prob'] ]
     for i in corr_terms:
@@ -178,7 +179,7 @@ if args.rep in ["corr_term", "all"]:
         print(f"{pretty_style}{i.pretty_printer().text()}")
 
 # print LLFs (lambda terms with type-raised NPs) for all sentences
-if args.rep in ["llf", "all"]:
+if "llf" in args.rep:
     print(f"\n{header_sty}LLF per sentence")
     llfs = [ parse_term(i['tree']['llf']) for i in output['prob'] ]
     for i in llfs:
@@ -188,7 +189,7 @@ if args.rep in ["llf", "all"]:
         print(f"{pretty_style}{i.pretty_printer().text()}")
 
 # print tableau proofs
-if args.rep in ["proof", "all"]:
+if "proof" in args.rep:
     print(f"\n{header_sty}--- Tableau proofs ---")
     lab_proofs = [ (label, parse_info_proof(info_proof)) \
                     for label, info_proof in output['proofs'].items() ]

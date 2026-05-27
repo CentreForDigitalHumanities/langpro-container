@@ -62,7 +62,7 @@ def run_langpro(parser, langpro, goal):
     abbr_parser = str_map(parser)
     cap_parser = str_map(parser, mode='cap')
     ok_parse, log, parsed, kb, ent_proof, cont_proof = langpro_to_html(langpro, goal)
-    parsed = re.sub('(<div class="parsed_problem_title">Problem \d+:).+?(</div>)',
+    parsed = re.sub(r'(<div class="parsed_problem_title">Problem \d+:).+?(</div>)',
                     r'\1 parsed with {}\2'.format(cap_parser), parsed)
     if ok_parse:
         tabs = ('<li><a href="#tab_{0}_ent"> Entailment &amp; {1}</a></li>'
@@ -123,10 +123,10 @@ def langpro_to_html(langpro, goal):
     #print '<xmp>proof length = {}</xmp>'.format(len(proof))
     #FIXME use xml parser
     #print '<pre>match object {}</pre>'.format(pformat(m))
-    kb = re.search('KB:.*?\[(.*?)\]', proof).group(1)
+    kb = re.search(r'KB:.*?\[(.*?)\]', proof).group(1)
     parsed_prob_xml = re.search('(<parsed_problem.+</parsed_problem>)',
                                 proof, re.S).group(1)
-    m = re.search('(<tableau>.*?</tableau>).*?(<tableau>.*?</tableau>).*?([a-zA-Z_\d]+).*?([a-zA-Z_\d]+)', proof, re.DOTALL)
+    m = re.search(r'(<tableau>.*?</tableau>).*?(<tableau>.*?</tableau>).*?([a-zA-Z_\d]+).*?([a-zA-Z_\d]+)', proof, re.DOTALL)
     (tab_ent, tab_cont, ent_ans, cont_ans) = m.groups()
     #print '<pre>{}, {}, {}, {}, {}, {}</pre>'.format(kb, len(parsed_prob_xml), len(tab_ent), len(tab_cont), ent_ans, cont_ans)
     #parsed_prob_xml = re.sub('KB:', '', parsed_prob_xml, re.DOTALL)
@@ -134,16 +134,16 @@ def langpro_to_html(langpro, goal):
     #parsed_prob_xml = ''
     #print "<xmp>kb = {}</xmp>".format(kb)
 
-    kb = re.sub('\),', '), ', kb)
+    kb = re.sub(r'\),', '), ', kb)
     #kb = re.sub(r'\w+\((\w+),\1\),?', '', kb)
-    kb = re.sub(',\s*$', '', kb)
+    kb = re.sub(r',\s*$', '', kb)
     #print "<xmp>kb = {}</xmp>".format(kb)
 
     ############### XSL transformations ################
     ttterms_xsl = 'xml/ttterms.xsl'
     parsed_prob_html = xsl_transformation(parsed_prob_xml, ttterms_xsl)
     #parsed_prob_html = re.sub('^.*?(<div class="parsed_problem">.+</div>).*', r'\1', parsed_prob_html, flags=re.DOTALL)
-    parsed_prob_html = re.sub('(Warning\: Sentence could not be parsed)', r'<span class="warning_no_parse">\1</span>', parsed_prob_html)
+    parsed_prob_html = re.sub(r'(Warning: Sentence could not be parsed)', r'<span class="warning_no_parse">\1</span>', parsed_prob_html)
     # get details from both proofs
     #print "<xmp>{}\n{}</xmp>".format(ent_ans, cont_ans)
     ent_proof = proof_results(ok_parse, tab_ent, ent_ans)
@@ -225,7 +225,7 @@ def xsl_transformation(xml_data, xsl_path, depth=100000000):
     #print "html root node: {}".format(tableau_html.tag)
     out = ET.tostring(tableau_html).decode()
     out = re.sub('<!DOCTYPE .+?>.+?<body .+?>', '', out, flags=re.DOTALL)
-    out = re.sub('</body>\s*</html>', '', out, flags=re.DOTALL)
+    out = re.sub(r'</body>\s*</html>', '', out, flags=re.DOTALL)
     return out
 
 ###############
@@ -255,9 +255,9 @@ def pretty_G_variables(proof):
     orig_proof = proof
     proof = re.sub(' *@ *', '@', proof)
     #print '*****lines in proof {}*****'.format(len(proof))
-    proof = re.sub('(_G\d+),', r'\1.', proof)
+    proof = re.sub(r'(_G\d+),', r'\1.', proof)
     #print '*****lines in proof {}*****'.format(len(proof))
-    g_vars = re.findall('_\d+', proof)
+    g_vars = re.findall(r'_\d+', proof)
     #print '*****gvars in proof {}*****'.format(len(g_vars))
     replace = {}
     counter = 0
@@ -276,7 +276,7 @@ def pretty_G_variables(proof):
 ######################
 def answer_to_fine_list(answer):
     #yes_al_closed11, no_na_open_Ter15
-    m = re.search('([a-z]+)_([a-z]+)_([A-Za-z_]+)(\d+)', answer)
+    m = re.search(r'([a-z]+)_([a-z]+)_([A-Za-z_]+)(\d+)', answer)
     if not m:
         return ('NA', 'NA', 'NA', 'NA')
     else:
@@ -434,7 +434,7 @@ def assertz_clause(pl):
     '''Given a prolog code, convert it to
        a code that asserts the facts inside it
     '''
-    clauses = re.findall('((?:sen_id|ccg|w)\(.+?\))\.', pl, re.DOTALL)
+    clauses = re.findall(r'((?:sen_id|ccg|w)\(.+?\))\.', pl, re.DOTALL)
     assertz = [ 'assertz({})'.format(cl) for cl in clauses ]
     return ',\n\n'.join(assertz)
 
@@ -450,7 +450,7 @@ def security_clean(string):
         return [ security_clean(x) for x in string ]
     else:
         #print "<xmp>before\n{}</xmp>".format(string)
-        out = re.sub('[^\w0-9_\s\-.,]', '', string, flags=re.UNICODE)
+        out = re.sub(r'[^\w0-9_\s\-.,]', '', string, flags=re.UNICODE)
         #print "<xmp>after\n{}</xmp>".format(out)
         return out
 
@@ -460,7 +460,7 @@ def tableau_info(al, status, apps, kb):
     #print "<xmp>terlimN = {}</xmp>".format(terlimN)
     #print "<xmp>kb = {}</xmp>".format(kb)
     kb = 'empty' if kb == '' \
-                 else re.sub('(\w+)\(', r'<span class="kb_predicate">\1</span>(', kb)
+                 else re.sub(r'(\w+)\(', r'<span class="kb_predicate">\1</span>(', kb)
     info = (' <div class="tableau_info">The tableau uses <b>{al}</b> LLFs and'
             ' it is <b>{status}</b> after <b>{apps}</b> rule applications.'
             ' The used KB is <span class="tab_kb">{kb}</span>.</div>'

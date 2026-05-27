@@ -48,7 +48,7 @@ Python example with LangPro API:
 ```
 # make sure to have LangPro cloned in the same dir as langpro-container
 # display only CCG trees for a pre-specified sample problem with id 1
-python3 LangPro_demo/call.py -i 1 -r tree
+python3 LangPro_demo/call.py -i 1 -r ccg_tree
 
 # display trees/terms and proofs for a custom NLI problem
 python3 LangPro_demo/call.py -p "Some cats are hungry" "No cat is sleeping" -c "There is a hungry cat that is not sleeping"

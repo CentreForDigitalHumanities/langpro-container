@@ -1,0 +1,178 @@
+{
+    "prob0": {
+        "p": [
+            {
+                "sen":
+                    "John runs",
+                "repr_ccg_tree":
+                    "Tree('ba[s:dcl]', [Tree('lx[np]', [Tree('n', [TLP('John','John','NNP','O','I-PER')])]), Tree('s:dcl\\\\np', [TLP('runs','run','VBZ','O','O')])])",
+                "repr_ccg_term":
+                    "TT(AppTT(TT(TLP('runs','run','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(TT(TLP('John','john','NNP','O','I-PER'), AtomCaTy(n:_)), AtomCaTy(np:_))), AtomCaTy(s:dcl))",
+                "repr_corr_term":
+                    "TT(AppTT(TT(TLP('runs','run','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(TLP('John','john','NNP','O','I-PER'), AtomCaTy(np:_))), AtomCaTy(s:dcl))",
+                "repr_llf":
+                    "TT(AppTT(TT(TLP('run','run','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(TLP('john','john','NNP','O','I-PER'), AtomCaTy(e))), AtomCaTy(s:dcl))",
+                "serialized_ccg_tree":
+                    {"node": "ba[s:dcl]", "children": [{"node": "lx[np]", "children": [{"node": "n", "children": [{"node": ["John", "John", "NNP", "O", "I-PER"]}]}]}, {"node": "s:dcl\\np", "children": [{"node": ["runs", "run", "VBZ", "O", "O"]}]}]},
+                "serialized_ccg_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["runs", "run", "VBZ", "O", "O"]}]}, {"node": "lx[np]", "children": [{"node": "n", "children": [{"node": ["John", "john", "NNP", "O", "I-PER"]}]}]}]},
+                "serialized_corr_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["runs", "run", "VBZ", "O", "O"]}]}, {"node": "np", "children": [{"node": ["John", "john", "NNP", "O", "I-PER"]}]}]},
+                "serialized_llf":
+                    {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["run", "run", "VBZ", "O", "O"]}]}, {"node": "e", "children": [{"node": ["john", "john", "NNP", "O", "I-PER"]}]}]}
+            }
+        ],
+        "h": {
+            "sen":
+                "John moves",
+            "repr_ccg_tree":
+                "Tree('ba[s:dcl]', [Tree('lx[np]', [Tree('n', [TLP('John','John','NNP','O','I-PER')])]), Tree('s:dcl\\\\np', [TLP('moves','move','NNS','O','O')])])",
+            "repr_ccg_term":
+                "TT(AppTT(TT(TLP('moves','move','NNS','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(TT(TLP('John','john','NNP','O','I-PER'), AtomCaTy(n:_)), AtomCaTy(np:_))), AtomCaTy(s:dcl))",
+            "repr_corr_term":
+                "TT(AppTT(TT(TLP('move','move','NN','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(TLP('John','john','NNP','O','I-PER'), AtomCaTy(np:_))), AtomCaTy(s:dcl))",
+            "repr_llf":
+                "TT(AppTT(TT(TLP('move','move','NN','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(TLP('john','john','NNP','O','I-PER'), AtomCaTy(e))), AtomCaTy(s:dcl))",
+            "serialized_ccg_tree":
+                {"node": "ba[s:dcl]", "children": [{"node": "lx[np]", "children": [{"node": "n", "children": [{"node": ["John", "John", "NNP", "O", "I-PER"]}]}]}, {"node": "s:dcl\\np", "children": [{"node": ["moves", "move", "NNS", "O", "O"]}]}]},
+            "serialized_ccg_term":
+                {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["moves", "move", "NNS", "O", "O"]}]}, {"node": "lx[np]", "children": [{"node": "n", "children": [{"node": ["John", "john", "NNP", "O", "I-PER"]}]}]}]},
+            "serialized_corr_term":
+                {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["move", "move", "NN", "O", "O"]}]}, {"node": "np", "children": [{"node": ["John", "john", "NNP", "O", "I-PER"]}]}]},
+            "serialized_llf":
+                {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["move", "move", "NN", "O", "O"]}]}, {"node": "e", "children": [{"node": ["john", "john", "NNP", "O", "I-PER"]}]}]}
+        },
+        "repr_entailment":
+            "Tree('1:\\nrun john\\nTrue', [Tree('2:\\nmove john\\nFalse', [Tree('3:push_arg([2])\\nmove\\n[john]\\nFalse', [Tree('4:push_arg([1])\\nrun\\n[john]\\nTrue', ['Closed\\ncl_subsumption([4, 3])'])])])])",
+        "repr_contradiction":
+            "Tree('1:\\nrun john\\nTrue', [Tree('2:\\nmove john\\nTrue', [Tree('3:push_arg([2])\\nmove\\n[john]\\nTrue', [Tree('4:push_arg([1])\\nrun\\n[john]\\nTrue', [Tree('3:same_args_xx([2,1])\\nmove\\n[john]\\nTrue', [Tree('4:same_args_xx([2,1])\\nrun\\n[john]\\nTrue', ['Model'])])])])])])",
+        "serialized_entailment":
+            {"node": "1:\nrun john\nTrue", "children": [{"node": "2:\nmove john\nFalse", "children": [{"node": "3:push_arg([2])\nmove\n[john]\nFalse", "children": [{"node": "4:push_arg([1])\nrun\n[john]\nTrue", "children": [{"node": "Closed\ncl_subsumption([4, 3])"}]}]}]}]},
+        "serialized_contradiction":
+            {"node": "1:\nrun john\nTrue", "children": [{"node": "2:\nmove john\nTrue", "children": [{"node": "3:push_arg([2])\nmove\n[john]\nTrue", "children": [{"node": "4:push_arg([1])\nrun\n[john]\nTrue", "children": [{"node": "3:same_args_xx([2,1])\nmove\n[john]\nTrue", "children": [{"node": "4:same_args_xx([2,1])\nrun\n[john]\nTrue", "children": [{"node": "Model"}]}]}]}]}]}]}
+    },
+    "prob1": {
+        "p": [
+            {
+                "sen":
+                    "All animals sleep",
+                "repr_ccg_tree":
+                    "Tree('ba[s:dcl]', [Tree('fa[np:nb]', [Tree('np:nb/n', [TLP('All','All','DT','O','O')]), Tree('n', [TLP('animals','animal','NNS','O','O')])]), Tree('s:dcl\\\\np', [TLP('sleep','sleep','VBP','O','O')])])",
+                "repr_ccg_term":
+                    "TT(AppTT(TT(TLP('sleep','sleep','VBP','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('All','all','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('animals','animal','NNS','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+                "repr_corr_term":
+                    "TT(AppTT(TT(TLP('sleep','sleep','VBP','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('All','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('animal','animal','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+                "repr_llf":
+                    "TT(AppTT(TT(AppTT(TT(TLP('every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl)))), TT(TLP('animal','animal','NN','O','O'), AtomCaTy(n:_))), CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl))), TT(TLP('sleep','sleep','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), AtomCaTy(s:dcl))",
+                "serialized_ccg_tree":
+                    {"node": "ba[s:dcl]", "children": [{"node": "fa[np:nb]", "children": [{"node": "np:nb/n", "children": [{"node": ["All", "All", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["animals", "animal", "NNS", "O", "O"]}]}]}, {"node": "s:dcl\\np", "children": [{"node": ["sleep", "sleep", "VBP", "O", "O"]}]}]},
+                "serialized_ccg_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["sleep", "sleep", "VBP", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["All", "all", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["animals", "animal", "NNS", "O", "O"]}]}]}]},
+                "serialized_corr_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["sleep", "sleep", "VBP", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["All", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["animal", "animal", "NN", "O", "O"]}]}]}]},
+                "serialized_llf":
+                    {"node": "@[s:dcl]", "children": [{"node": "@[(np:nb-s:dcl)-s:dcl]", "children": [{"node": "n-(np:nb-s:dcl)-s:dcl", "children": [{"node": ["every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["animal", "animal", "NN", "O", "O"]}]}]}, {"node": "np-s:dcl", "children": [{"node": ["sleep", "sleep", "VBZ", "O", "O"]}]}]}
+            }
+        ],
+        "h": {
+            "sen":
+                "Every dog sleeps",
+            "repr_ccg_tree":
+                "Tree('ba[s:dcl]', [Tree('fa[np:nb]', [Tree('np:nb/n', [TLP('Every','Every','DT','O','O')]), Tree('n', [TLP('dog','dog','NN','O','O')])]), Tree('s:dcl\\\\np', [TLP('sleeps','sleep','VBZ','O','O')])])",
+            "repr_ccg_term":
+                "TT(AppTT(TT(TLP('sleeps','sleep','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('Every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('dog','dog','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+            "repr_corr_term":
+                "TT(AppTT(TT(TLP('sleeps','sleep','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('Every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('dog','dog','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+            "repr_llf":
+                "TT(AppTT(TT(AppTT(TT(TLP('every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl)))), TT(TLP('dog','dog','NN','O','O'), AtomCaTy(n:_))), CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl))), TT(TLP('sleep','sleep','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), AtomCaTy(s:dcl))",
+            "serialized_ccg_tree":
+                {"node": "ba[s:dcl]", "children": [{"node": "fa[np:nb]", "children": [{"node": "np:nb/n", "children": [{"node": ["Every", "Every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["dog", "dog", "NN", "O", "O"]}]}]}, {"node": "s:dcl\\np", "children": [{"node": ["sleeps", "sleep", "VBZ", "O", "O"]}]}]},
+            "serialized_ccg_term":
+                {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["sleeps", "sleep", "VBZ", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["Every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["dog", "dog", "NN", "O", "O"]}]}]}]},
+            "serialized_corr_term":
+                {"node": "@[s:dcl]", "children": [{"node": "np-s:dcl", "children": [{"node": ["sleeps", "sleep", "VBZ", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["Every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["dog", "dog", "NN", "O", "O"]}]}]}]},
+            "serialized_llf":
+                {"node": "@[s:dcl]", "children": [{"node": "@[(np:nb-s:dcl)-s:dcl]", "children": [{"node": "n-(np:nb-s:dcl)-s:dcl", "children": [{"node": ["every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["dog", "dog", "NN", "O", "O"]}]}]}, {"node": "np-s:dcl", "children": [{"node": ["sleep", "sleep", "VBZ", "O", "O"]}]}]}
+        },
+        "repr_entailment":
+            "Tree('1:\\n(every animal) sleep\\nTrue', [Tree('2:\\n(every dog) sleep\\nFalse', [Tree('3:same_args_tf([1,2])\\nevery animal\\n[sleep]\\nTrue', [Tree('4:same_args_tf([1,2])\\nevery dog\\n[sleep]\\nFalse', [Tree('5:dw_mon_fun([c1],[3,4])\\nanimal\\n[c1]\\nFalse', [Tree('6:dw_mon_fun([c1],[3,4])\\ndog\\n[c1]\\nTrue', ['Closed\\ncl_subsumption([5, 6])'])])])])])])",
+        "repr_contradiction":
+            "Tree('1:\\n(every animal) sleep\\nTrue', [Tree('2:\\n(every dog) sleep\\nTrue', [Tree('3:same_args_xx([2,1])\\nevery dog\\n[sleep]\\nTrue', [Tree('4:same_args_xx([2,1])\\nevery animal\\n[sleep]\\nTrue', ['Model'])])])])",
+        "serialized_entailment":
+            {"node": "1:\n(every animal) sleep\nTrue", "children": [{"node": "2:\n(every dog) sleep\nFalse", "children": [{"node": "3:same_args_tf([1,2])\nevery animal\n[sleep]\nTrue", "children": [{"node": "4:same_args_tf([1,2])\nevery dog\n[sleep]\nFalse", "children": [{"node": "5:dw_mon_fun([c1],[3,4])\nanimal\n[c1]\nFalse", "children": [{"node": "6:dw_mon_fun([c1],[3,4])\ndog\n[c1]\nTrue", "children": [{"node":"Closed\ncl_subsumption([5, 6])"}]}]}]}]}]}]},
+        "serialized_contradiction":
+            {"node": "1:\n(every animal) sleep\nTrue", "children": [{"node": "2:\n(every dog) sleep\nTrue", "children": [{"node": "3:same_args_xx([2,1])\nevery dog\n[sleep]\nTrue", "children": [{"node": "4:same_args_xx([2,1])\nevery animal\n[sleep]\nTrue", "children": [{"node":"Model"}]}]}]}]}
+    },
+    "prob2": {
+        "p": [
+            {
+                "sen":
+                    "Every man is working",
+                "repr_ccg_tree":
+                    "Tree('ba[s:dcl]', [Tree('fa[np:nb]', [Tree('np:nb/n', [TLP('Every','Every','DT','O','O')]), Tree('n', [TLP('man','man','NN','O','O')])]), Tree('fa[s:dcl\\\\np]', [Tree('(s:dcl\\\\np)/(s:ng\\\\np)', [TLP('is','be','VBZ','O','O')]), Tree('s:ng\\\\np', [TLP('working','work','VBG','O','O')])])])",
+                "repr_ccg_term":
+                    "TT(AppTT(TT(AppTT(TT(TLP('is','be','VBZ','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng))-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(TLP('working','work','VBG','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng)))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('Every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('man','man','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+                "repr_corr_term":
+                    "TT(AppTT(TT(AppTT(TT(TLP('is','be','VBZ','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng))-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(TLP('working','work','VBG','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng)))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('Every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('man','man','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+                "repr_llf":
+                    "TT(AppTT(TT(AppTT(TT(TLP('every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl)))), TT(TLP('man','man','NN','O','O'), AtomCaTy(n:_))), CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('be','be','VBZ','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng))-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(TLP('work','work','VBG','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng)))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), AtomCaTy(s:dcl))",
+                "serialized_ccg_tree":
+                    {"node": "ba[s:dcl]", "children": [{"node": "fa[np:nb]", "children": [{"node": "np:nb/n", "children": [{"node": ["Every", "Every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}, {"node": "fa[s:dcl\\np]", "children": [{"node": "(s:dcl\\np)/(s:ng\\np)", "children": [{"node": ["is", "be", "VBZ", "O", "O"]}]}, {"node": "s:ng\\np", "children": [{"node": ["working", "work", "VBG", "O", "O"]}]}]}]},
+                "serialized_ccg_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "(np-s:ng)-np-s:dcl", "children": [{"node": ["is", "be", "VBZ", "O", "O"]}]}, {"node": "np-s:ng", "children": [{"node": ["working", "work", "VBG", "O", "O"]}]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["Every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}]},
+                "serialized_corr_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "(np-s:ng)-np-s:dcl", "children": [{"node": ["is", "be", "VBZ", "O", "O"]}]}, {"node": "np-s:ng", "children": [{"node": ["working", "work", "VBG", "O", "O"]}]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["Every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}]},
+                "serialized_llf":
+                    {"node": "@[s:dcl]", "children": [{"node": "@[(np:nb-s:dcl)-s:dcl]", "children": [{"node": "n-(np:nb-s:dcl)-s:dcl", "children": [{"node": ["every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}, {"node": "@[np-s:dcl]", "children": [{"node": "(np-s:ng)-np-s:dcl", "children": [{"node": ["be", "be", "VBZ", "O", "O"]}]}, {"node": "np-s:ng", "children": [{"node": ["work", "work", "VBG", "O", "O"]}]}]}]}
+            },
+            {
+                "sen":
+                    "Everybody who is working has an expensive car",
+                "repr_ccg_tree":
+                    "Tree('ba[s:dcl]', [Tree('ba[np]', [Tree('np', [TLP('Everybody','Everybody','DT','O','O')]), Tree('fa[np\\\\np]', [Tree('(np\\\\np)/(s:dcl\\\\np)', [TLP('who','who','WP','O','O')]), Tree('fa[s:dcl\\\\np]', [Tree('(s:dcl\\\\np)/(s:ng\\\\np)', [TLP('is','be','VBZ','O','O')]), Tree('s:ng\\\\np', [TLP('working','work','VBG','O','O')])])])]), Tree('fa[s:dcl\\\\np]', [Tree('(s:dcl\\\\np)/np', [TLP('has','have','VBZ','O','O')]), Tree('fa[np:nb]', [Tree('np:nb/n', [TLP('an','an','DT','O','O')]), Tree('fa[n]', [Tree('n/n', [TLP('expensive','expensive','JJ','O','O')]), Tree('n', [TLP('car','car','NN','O','O')])])])])])",
+                "repr_ccg_term":
+                    "TT(AppTT(TT(AppTT(TT(TLP('has','have','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(AppTT(TT(TLP('an','an','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(AppTT(TT(TLP('expensive','expensive','JJ','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(n:_))), TT(TLP('car','car','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(n:_))), AtomCaTy(np:nb))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(AppTT(TT(TLP('who','who','WP','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))-CompCaTy(AtomCaTy(np:_)-AtomCaTy(np:_)))), TT(AppTT(TT(TLP('is','be','VBZ','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng))-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(TLP('working','work','VBG','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng)))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(np:_))), TT(TLP('Everybody','everybody','DT','O','O'), AtomCaTy(np:_))), AtomCaTy(np:_))), AtomCaTy(s:dcl))",
+                "repr_corr_term":
+                    "TT(AppTT(TT(AppTT(TT(TLP('has','have','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(AppTT(TT(TLP('an','a','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(AppTT(TT(TLP('expensive','expensive','JJ','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(n:_))), TT(TLP('car','car','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(n:_))), AtomCaTy(np:nb))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('every','every','DT','Ins','Ins'), CompCaTy(AtomCaTy(n:A)-AtomCaTy(np:_))), TT(AppTT(TT(AppTT(TT(TLP('who','who','WP','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))-CompCaTy(AtomCaTy(n:_)-AtomCaTy(n:_)))), TT(AppTT(TT(TLP('is','be','VBZ','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng))-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(TLP('working','work','VBG','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng)))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), CompCaTy(AtomCaTy(n:_)-AtomCaTy(n:_))), TT(TLP('person','person','NN','Ins','Ins'), AtomCaTy(n:A))), AtomCaTy(n:_))), AtomCaTy(np:_))), AtomCaTy(s:dcl))",
+                "repr_llf":
+                    "TT(AppTT(TT(AppTT(TT(TLP('every','every','DT','Ins','Ins'), CompCaTy(AtomCaTy(n:A)-CompCaTy(CompCaTy(AtomCaTy(np:B)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl)))), TT(AppTT(TT(AppTT(TT(TLP('who','who','WP','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))-CompCaTy(AtomCaTy(n:_)-AtomCaTy(n:_)))), TT(AppTT(TT(TLP('be','be','VBZ','O','O'), CompCaTy(CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng))-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(TLP('work','work','VBG','O','O'), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:ng)))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), CompCaTy(AtomCaTy(n:_)-AtomCaTy(n:_))), TT(TLP('person','person','NN','Ins','Ins'), AtomCaTy(n:A))), AtomCaTy(n:_))), CompCaTy(CompCaTy(AtomCaTy(np:B)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl))), TT(AbsTT(TT(Var(D), AtomCaTy(np:B)), TT(AppTT(TT(AppTT(TT(TLP('a','a','DT','O','O'), CompCaTy(AtomCaTy(n:_)-CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl)))), TT(AppTT(TT(TLP('expensive','expensive','JJ','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(n:_))), TT(TLP('car','car','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(n:_))), CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl))), TT(AbsTT(TT(Var(C), AtomCaTy(np:nb)), TT(AppTT(TT(AppTT(TT(TLP('have','have','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(Var(C), AtomCaTy(np:nb))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(Var(D), AtomCaTy(np:B))), AtomCaTy(s:dcl))), CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl)))), AtomCaTy(s:dcl))), CompCaTy(AtomCaTy(np:B)-AtomCaTy(s:dcl)))), AtomCaTy(s:dcl))",
+                "serialized_ccg_tree":
+                    {"node": "ba[s:dcl]", "children": [{"node": "ba[np]", "children": [{"node": "np", "children": [{"node": ["Everybody", "Everybody", "DT", "O", "O"]}]}, {"node": "fa[np\\np]", "children": [{"node": "(np\\np)/(s:dcl\\np)", "children": [{"node": ["who", "who", "WP", "O", "O"]}]}, {"node": "fa[s:dcl\\np]", "children": [{"node": "(s:dcl\\np)/(s:ng\\np)", "children": [{"node": ["is", "be", "VBZ", "O", "O"]}]}, {"node": "s:ng\\np", "children": [{"node": ["working", "work", "VBG", "O", "O"]}]}]}]}]}, {"node": "fa[s:dcl\\np]", "children": [{"node": "(s:dcl\\np)/np", "children": [{"node": ["has", "have", "VBZ", "O", "O"]}]}, {"node": "fa[np:nb]", "children": [{"node": "np:nb/n", "children": [{"node": ["an", "an", "DT", "O", "O"]}]}, {"node": "fa[n]", "children": [{"node": "n/n", "children": [{"node": ["expensive", "expensive", "JJ", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}]}]}]},
+                "serialized_ccg_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "np-np-s:dcl", "children": [{"node": ["has", "have", "VBZ", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["an", "an", "DT", "O", "O"]}]}, {"node": "@[n]", "children": [{"node": "n-n", "children": [{"node": ["expensive", "expensive", "JJ", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}]}]}, {"node": "@[np]", "children": [{"node": "@[np-np]", "children": [{"node": "(np-s:dcl)-np-np", "children": [{"node": ["who", "who", "WP", "O", "O"]}]}, {"node": "@[np-s:dcl]", "children": [{"node": "(np-s:ng)-np-s:dcl", "children": [{"node": ["is", "be", "VBZ", "O", "O"]}]}, {"node": "np-s:ng", "children": [{"node": ["working", "work", "VBG", "O", "O"]}]}]}]}, {"node": "np", "children": [{"node": ["Everybody", "everybody", "DT", "O", "O"]}]}]}]},
+                "serialized_corr_term":
+                    {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "np-np-s:dcl", "children": [{"node": ["has", "have", "VBZ", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["an", "a", "DT", "O", "O"]}]}, {"node": "@[n]", "children": [{"node": "n-n", "children": [{"node": ["expensive", "expensive", "JJ", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}]}]}, {"node": "@[np]", "children": [{"node": "n-np", "children": [{"node": ["every", "every", "DT", "Ins", "Ins"]}]}, {"node": "@[n]", "children": [{"node": "@[n-n]", "children": [{"node": "(np-s:dcl)-n-n", "children": [{"node": ["who", "who", "WP", "O", "O"]}]}, {"node": "@[np-s:dcl]", "children": [{"node": "(np-s:ng)-np-s:dcl", "children": [{"node": ["is", "be", "VBZ", "O", "O"]}]}, {"node": "np-s:ng", "children": [{"node": ["working", "work", "VBG", "O", "O"]}]}]}]}, {"node": "n", "children": [{"node": ["person", "person", "NN", "Ins", "Ins"]}]}]}]}]},
+                "serialized_llf":
+                    {"node": "@[s:dcl]", "children": [{"node": "@[(np-s:dcl)-s:dcl]", "children": [{"node": "n-(np-s:dcl)-s:dcl", "children": [{"node": ["every", "every", "DT", "Ins", "Ins"]}]}, {"node": "@[n]", "children": [{"node": "@[n-n]", "children": [{"node": "(np-s:dcl)-n-n", "children": [{"node": ["who", "who", "WP", "O", "O"]}]}, {"node": "@[np-s:dcl]", "children": [{"node": "(np-s:ng)-np-s:dcl", "children": [{"node": ["be", "be", "VBZ", "O", "O"]}]}, {"node": "np-s:ng", "children": [{"node": ["work", "work", "VBG", "O", "O"]}]}]}]}, {"node": "n", "children": [{"node": ["person", "person", "NN", "Ins", "Ins"]}]}]}]}, {"node": "λ[np-s:dcl]", "children": [{"node": "np", "children": [{"node": "λD"}]}, {"node": "@[s:dcl]", "children": [{"node": "@[(np:nb-s:dcl)-s:dcl]", "children": [{"node": "n-(np:nb-s:dcl)-s:dcl", "children": [{"node": ["a", "a", "DT", "O", "O"]}]}, {"node": "@[n]", "children": [{"node": "n-n", "children": [{"node": ["expensive", "expensive", "JJ", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}]}, {"node": "λ[np:nb-s:dcl]", "children": [{"node": "np:nb", "children": [{"node": "λC"}]}, {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "np-np-s:dcl", "children": [{"node": ["have", "have", "VBZ", "O", "O"]}]}, {"node": "np:nb", "children": [{"node": "C"}]}]}, {"node": "np", "children": [{"node": "D"}]}]}]}]}]}]}
+            }
+        ],
+        "h": {
+            "sen":
+                "Every man owns a car",
+            "repr_ccg_tree":
+                "Tree('ba[s:dcl]', [Tree('fa[np:nb]', [Tree('np:nb/n', [TLP('Every','Every','DT','O','O')]), Tree('n', [TLP('man','man','NN','O','O')])]), Tree('fa[s:dcl\\\\np]', [Tree('(s:dcl\\\\np)/np', [TLP('owns','own','VBZ','O','O')]), Tree('fa[np:nb]', [Tree('np:nb/n', [TLP('a','a','DT','O','O')]), Tree('n', [TLP('car','car','NN','O','O')])])])])",
+            "repr_ccg_term":
+                "TT(AppTT(TT(AppTT(TT(TLP('owns','own','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(AppTT(TT(TLP('a','a','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('car','car','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('Every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('man','man','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+            "repr_corr_term":
+                "TT(AppTT(TT(AppTT(TT(TLP('owns','own','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(AppTT(TT(TLP('a','a','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('car','car','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(AppTT(TT(TLP('Every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-AtomCaTy(np:nb))), TT(TLP('man','man','NN','O','O'), AtomCaTy(n:_))), AtomCaTy(np:nb))), AtomCaTy(s:dcl))",
+            "repr_llf":
+                "TT(AppTT(TT(AppTT(TT(TLP('every','every','DT','O','O'), CompCaTy(AtomCaTy(n:_)-CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl)))), TT(TLP('man','man','NN','O','O'), AtomCaTy(n:_))), CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl))), TT(AbsTT(TT(Var(B), AtomCaTy(np:nb)), TT(AppTT(TT(AppTT(TT(TLP('a','a','DT','O','O'), CompCaTy(AtomCaTy(n:_)-CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl)))), TT(TLP('car','car','NN','O','O'), AtomCaTy(n:_))), CompCaTy(CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl))-AtomCaTy(s:dcl))), TT(AbsTT(TT(Var(A), AtomCaTy(np:nb)), TT(AppTT(TT(AppTT(TT(TLP('own','own','VBZ','O','O'), CompCaTy(AtomCaTy(np:_)-CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl)))), TT(Var(A), AtomCaTy(np:nb))), CompCaTy(AtomCaTy(np:_)-AtomCaTy(s:dcl))), TT(Var(B), AtomCaTy(np:nb))), AtomCaTy(s:dcl))), CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl)))), AtomCaTy(s:dcl))), CompCaTy(AtomCaTy(np:nb)-AtomCaTy(s:dcl)))), AtomCaTy(s:dcl))",
+            "serialized_ccg_tree":
+                {"node": "ba[s:dcl]", "children": [{"node": "fa[np:nb]", "children": [{"node": "np:nb/n", "children": [{"node": ["Every", "Every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}, {"node": "fa[s:dcl\\np]", "children": [{"node": "(s:dcl\\np)/np", "children": [{"node": ["owns", "own", "VBZ", "O", "O"]}]}, {"node": "fa[np:nb]", "children": [{"node": "np:nb/n", "children": [{"node": ["a", "a", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}]}]},
+            "serialized_ccg_term":
+                {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "np-np-s:dcl", "children": [{"node": ["owns", "own", "VBZ", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["a", "a", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["Every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}]},
+            "serialized_corr_term":
+                {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "np-np-s:dcl", "children": [{"node": ["owns", "own", "VBZ", "O", "O"]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["a", "a", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}]}, {"node": "@[np:nb]", "children": [{"node": "n-np:nb", "children": [{"node": ["Every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}]},
+            "serialized_llf":
+                {"node": "@[s:dcl]", "children": [{"node": "@[(np:nb-s:dcl)-s:dcl]", "children": [{"node": "n-(np:nb-s:dcl)-s:dcl", "children": [{"node": ["every", "every", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["man", "man", "NN", "O", "O"]}]}]}, {"node": "λ[np:nb-s:dcl]", "children": [{"node": "np:nb", "children": [{"node": "λB"}]}, {"node": "@[s:dcl]", "children": [{"node": "@[(np:nb-s:dcl)-s:dcl]", "children": [{"node": "n-(np:nb-s:dcl)-s:dcl", "children": [{"node": ["a", "a", "DT", "O", "O"]}]}, {"node": "n", "children": [{"node": ["car", "car", "NN", "O", "O"]}]}]}, {"node": "λ[np:nb-s:dcl]", "children": [{"node": "np:nb", "children": [{"node": "λA"}]}, {"node": "@[s:dcl]", "children": [{"node": "@[np-s:dcl]", "children": [{"node": "np-np-s:dcl", "children": [{"node": ["own", "own", "VBZ", "O", "O"]}]}, {"node": "np:nb", "children": [{"node": "A"}]}]}, {"node": "np:nb", "children": [{"node": "B"}]}]}]}]}]}]}
+        },
+        "repr_entailment":
+            "Tree('1:\\n(every man)(be work)\\nTrue', [Tree('2:\\n(every ((who (be work)) person))(λF.((a (expensive car))(λE.((have E) F))))\\nTrue', [Tree('3:\\n(every man)(λM.((a car)(λE.((own E) M))))\\nFalse', [Tree('4:up_mon_fun_some([c1],[1,3])\\nbe work\\n[c1]\\nTrue', [Tree('5:up_mon_fun_some([c1],[1,3])\\nλM.((a car)(λE.((own E) M)))\\n[c1]\\nFalse', [Tree('6:up_mon_fun_some([c1],[1,3])\\nman\\n[c1]\\nTrue', [Tree('7:pull_arg([5])\\n(a car)(λE.((own E) c1))\\nFalse', [Tree('8:empty_mod([4])\\nwork\\n[c1]\\nTrue', [Tree('9:tr_every([2],[c1])\\n(who (be work)) person\\n[c1]\\nFalse', [Tree('12:fl_conj_who([9])\\nbe work\\n[c1]\\nFalse', [Tree('15:empty_mod([12])\\nwork\\n[c1]\\nFalse', ['Closed\\ncl_subsumption([15, 8])'])]), Tree('13:fl_conj_who([9])\\nperson\\n[c1]\\nFalse', ['Closed\\ncl_subsumption([13, 6])'])]), Tree('10:tr_every([2],[c1])\\n(who (be work)) person\\n[c1]\\nTrue', [Tree('11:tr_every([2],[c1])\\nλF.((a (expensive car))(λE.((have E) F)))\\n[c1]\\nTrue', [Tree('14:pull_arg([11])\\n(a (expensive car))(λE.((have E) c1))\\nTrue', [Tree('16:tr_conj_who([10])\\nbe work\\n[c1]\\nTrue', [Tree('17:tr_conj_who([10])\\nperson\\n[c1]\\nTrue', [Tree('8:empty_mod([16])\\nwork\\n[c1]\\nTrue', [Tree('18:same_args_tf([14,7])\\na (expensive car)\\n[λE.((have E) c1)]\\nTrue', [Tree('19:same_args_tf([14,7])\\na car\\n[λE.((have E) c1)]\\nFalse', [Tree('20:up_mon_fun([c2],[18,19])\\nexpensive car\\n[c2]\\nTrue', [Tree('21:up_mon_fun([c2],[18,19])\\ncar\\n[c2]\\nFalse', [Tree('22:int_mod_tr([20])\\ncar\\n[c2]\\nTrue', [Tree('23:int_mod_tr([20])\\nexpensive\\n[c2]\\nTrue', ['Closed\\ncl_subsumption([22, 21])'])])])])])])])])])])])])])])])])])])])])",
+        "repr_contradiction":
+            "Tree('1:\\n(every man)(be work)\\nTrue', [Tree('2:\\n(every ((who (be work)) person))(λF.((a (expensive car))(λE.((have E) F))))\\nTrue', [Tree('3:\\n(every man)(λM.((a car)(λE.((own E) M))))\\nTrue', ['Model'])])])",
+        "serialized_entailment":
+            {"node": "1:\n(every man)(be work)\nTrue", "children": [{"node": "2:\n(every ((who (be work)) person))(λF.((a (expensive car))(λE.((have E) F))))\nTrue", "children": [{"node": "3:\n(every man)(λM.((a car)(λE.((own E) M))))\nFalse", "children": [{"node": "4:up_mon_fun_some([c1],[1,3])\nbe work\n[c1]\nTrue", "children": [{"node": "5:up_mon_fun_some([c1],[1,3])\nλM.((a car)(λE.((own E) M)))\n[c1]\nFalse", "children": [{"node": "6:up_mon_fun_some([c1],[1,3])\nman\n[c1]\nTrue", "children": [{"node": "7:pull_arg([5])\n(a car)(λE.((own E) c1))\nFalse", "children": [{"node": "8:empty_mod([4])\nwork\n[c1]\nTrue", "children": [{"node": "9:tr_every([2],[c1])\n(who (be work)) person\n[c1]\nFalse", "children": [{"node": "12:fl_conj_who([9])\nbe work\n[c1]\nFalse", "children": [{"node": "15:empty_mod([12])\nwork\n[c1]\nFalse", "children": [{"node":"Closed\ncl_subsumption([15, 8])"}]}]}, {"node": "13:fl_conj_who([9])\nperson\n[c1]\nFalse", "children": [{"node":"Closed\ncl_subsumption([13, 6])"}]}]}, {"node": "10:tr_every([2],[c1])\n(who (be work)) person\n[c1]\nTrue", "children": [{"node": "11:tr_every([2],[c1])\nλF.((a (expensive car))(λE.((have E) F)))\n[c1]\nTrue", "children": [{"node": "14:pull_arg([11])\n(a (expensive car))(λE.((have E) c1))\nTrue", "children": [{"node": "16:tr_conj_who([10])\nbe work\n[c1]\nTrue", "children": [{"node": "17:tr_conj_who([10])\nperson\n[c1]\nTrue", "children": [{"node": "8:empty_mod([16])\nwork\n[c1]\nTrue", "children": [{"node": "18:same_args_tf([14,7])\na (expensive car)\n[λE.((have E) c1)]\nTrue", "children": [{"node": "19:same_args_tf([14,7])\na car\n[λE.((have E) c1)]\nFalse", "children": [{"node": "20:up_mon_fun([c2],[18,19])\nexpensive car\n[c2]\nTrue", "children": [{"node": "21:up_mon_fun([c2],[18,19])\ncar\n[c2]\nFalse", "children": [{"node": "22:int_mod_tr([20])\ncar\n[c2]\nTrue", "children": [{"node": "23:int_mod_tr([20])\nexpensive\n[c2]\nTrue", "children": [{"node": "Closed\ncl_subsumption([22, 21])"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]},
+        "serialized_contradiction":
+            {"node": "1:\n(every man)(be work)\nTrue", "children": [{"node": "2:\n(every ((who (be work)) person))(λF.((a (expensive car))(λE.((have E) F))))\nTrue", "children": [{"node": "3:\n(every man)(λM.((a car)(λE.((own E) M))))\nTrue", "children": [{"node": "Model"}]}]}]}
+    }
+}
