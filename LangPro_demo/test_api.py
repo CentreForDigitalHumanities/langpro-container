@@ -13,22 +13,11 @@ from nltk import Tree
 import json
 from pathlib import Path
 
-# importing langpro_api functions
-LANGPRO_PY = Path(__file__).resolve().parents[3] / "LangPro/python"
-# Check the availability of the api file
-if not (LANGPRO_PY / 'langpro_api.py').is_file():
-    raise RuntimeError(f"Couldn't find langpro_api.py in {LANGPRO_PY}")
-sys.path.insert(0, str(LANGPRO_PY))
 from langpro_api import parse_ccg_tree, parse_term, parse_proof_tree
 
-# importing container api functions
-DEMO_DIR = Path(__file__).resolve().parents[1]
-if not (DEMO_DIR / 'server.py').is_file():
-    raise RuntimeError(f"Couldn't find server.py in {DEMO_DIR}")
-sys.path.insert(0, str(DEMO_DIR))
 from server import serialize_tree
 
-DATA_DIR = Path(__file__).parent / "data"
+DATA_DIR = Path(__file__).parent / "tests" / "data"
 
 
 ####################################################
@@ -49,14 +38,14 @@ NLI_PROBLEMS = [
 
 # read the content of nli_prob{0,1,2}.json files, which serves as input to tests
 NLI_PROB_LP_JSON = {}
-for i in range(3):
-    with open(DATA_DIR / f"nli_prob{i}.json", encoding="utf-8") as F:
-        out = json.load(F)
+for i, problem in enumerate(NLI_PROBLEMS):
+    with open(DATA_DIR / f"nli_prob{i}.json", encoding="utf-8") as nli_json:
+        out = json.load(nli_json)
         # check consistency with NLI_PROBLEMS
         assert NLI_PROBLEMS[i]['premises'] == \
-            [e["sen"] for e in out["prob"] if e["role"] == "p"]
+            [entry["sen"] for entry in out["prob"] if entry["role"] == "p"]
         assert NLI_PROBLEMS[i]['hypothesis'] == \
-            [e["sen"] for e in out["prob"] if e["role"] == "h"][0]
+            [entry["sen"] for entry in out["prob"] if entry["role"] == "h"][0]
         NLI_PROB_LP_JSON[f"prob{i}"] = out
 
 # read all the expected values
@@ -87,8 +76,8 @@ def test_serialize_tree_for_trees(prob_id, sen_idx, tree_type):
     json_tree = json_sen["tree"][tree_type]
 
     # get right expected value for a sentences and its tree/term
-    expected_sen = [ s for \
-        s in (EXPECTED[pid]['p'] + [EXPECTED[pid]['h']]) \
+    expected_sen = [ s
+        for s in (EXPECTED[pid]['p'] + [EXPECTED[pid]['h']])
         if s["sen"] == json_sen["sen"]][0]
     expected = expected_sen[f"serialized_{tree_type}"]
     # for intermediate checking of parsing
