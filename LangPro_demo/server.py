@@ -183,7 +183,7 @@ def parse_and_prove():
         raise RuntimeError()
 
     fmt = request.json.get("format", "raw")
-    parser = request.json.get("parser", "cc")
+    parser = request.json.get("parser", "easyccg")
     prover_config = request.json["prover_config"]
     premises = request.json["premises"]
     hypothesis = request.json["hypothesis"]
