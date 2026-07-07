@@ -26,10 +26,10 @@ docker run -it -p 8080:80 --rm -v $(pwd)/LangPro_demo:/langpro  -v $(pwd)/LangPr
 (old) demo interface is served on http://localhost:8080/
 
 
-Curl example:
+## Curl calls
 
+A problem with two two premises
 ```
-# Example with two premises
 curl 'http://localhost:8080/api/prove/' \
     -H 'Content-Type: application/json' \
     -d '{"prover_config":["allInt", "aall"],
@@ -38,8 +38,10 @@ curl 'http://localhost:8080/api/prove/' \
          "hypothesis":"Every man owns a car",
          "ral":200,
          "senses":"all"}'
+```
 
-# Example with user knowledge injection "guinea pig is small animal" and "snoring means sleeping"
+An example with user knowledge injection "`guinea pig` is `small animal`" and "`snoring` means `sleeping`"
+```
 curl 'http://localhost:8080/api/prove/' \
     -H 'Content-Type: application/json' \
     -d '{"premises": ["A guinea pig is snoring"],
@@ -48,18 +50,23 @@ curl 'http://localhost:8080/api/prove/' \
          "ral": 200,
          "kb": ["isa_wn(guinea pig, small animal)", "isa_wn(snore,sleep)"],
          "senses": "all"}'
+```
 
-# Example with a knowledge about disjoint/incompatible relation
+An Example with a knowledge about disjoint/incompatible relation
+```
 curl 'http://localhost:8080/api/prove/' \
     -H 'Content-Type: application/json' \
     -d '{"premises": ["A hamster is jumping"],
          "hypothesis": "A hamster is resting",
          "prover_config": ["allInt", "aall"],
          "ral": 200,
-         "kb": ["disj(rest,jump)"], "senses": "all"}'
+         "kb": ["disj(rest,jump)"],
+         "senses": "all"}'
+```
 
-# Specifying the parser argument
-# note that certain parsers might fail to parse sentences of certain problems, e.g., "re-cc" fails for this input problem
+Specifying the parser argument.
+Note that certain parsers might fail to parse sentences of certain problems, e.g., "re-cc" fails for this input problem
+```
 curl 'http://localhost:8080/api/prove/' \
     -H 'Content-Type: application/json' \
     -d '{"premises": ["A woman is putting on lipstick"],
@@ -71,7 +78,23 @@ curl 'http://localhost:8080/api/prove/' \
          "parser": "cc"}'
 ```
 
-Python example with LangPro API:
+Passing already CCG-parsed sentences, i.e., overstepping CCG parsing.
+```
+curl 'http://localhost:8080/api/prove/' \
+    -H 'Content-Type: application/json' \
+    --data-binary @- <<'JSON'
+    {"premises": ["John runs"],
+     "hypothesis": "John moves",
+     "parsed": {"premises": ["ba(s:dcl,\n lx(np, n,\n  t(n,'John','John','NNP','O','I-PER')),\n t(s:dcl\\np,runs,run,'VBZ','O','O'))"],
+     "hypothesis": "ba(s:dcl,\n lx(np, n,\n  t(n,'John','John','NNP','O','I-PER')),\n t(s:dcl\\np,moves,move,'VBZ','O','O'))"},
+     "prover_config": ["allInt", "aall"],
+     "ral": 200,
+     "senses": "all"
+    }
+JSON
+```
+
+## Python example with LangPro API:
 
 ```
 # make sure to have LangPro cloned in the same dir as langpro-container
