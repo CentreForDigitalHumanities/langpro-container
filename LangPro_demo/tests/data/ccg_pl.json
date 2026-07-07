@@ -1,0 +1,4 @@
+{
+  "John runs":  "ba(s:dcl,\n lx(np, n,\n  t(n,'John','John','NNP','O','I-PER')),\n t(s:dcl\\np,runs,run,'VBZ','O','O'))",
+  "John moves": "ba(s:dcl,\n lx(np, n,\n  t(n,'John','John','NNP','O','I-PER')),\n t(s:dcl\\np,moves,move,'VBZ','O','O'))"
+}

@@ -1,3 +1,4 @@
+import cmd
 import json
 import re
 import nltk
@@ -10,6 +11,15 @@ import langpro_demo as lp
 from langpro_api import parse_ccg_tree, parse_info_proof, parse_term, PrologTerm
 
 from util import run_tool
+
+import logging
+# include in logs: timestamp, log level, logger name, and message
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
+# create a logger for this module
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -85,7 +95,12 @@ def prepare_input(input, parser):
     return defs + sentences_pl + derivations
 
 
-def prepare_input_json(premises, hypothesis, parser, v=0):
+def prepare_input_json(premises, hypothesis, parser, parsed, v=0):
+    """ Prepare the input for LangPro in Prolog format:
+        Format NLI problem with sen_id predicates,
+        get CCG derivations using the specified parser, unless already parsed
+        sentences are provided as input.
+    """
     defs = (
         ":- dynamic sen_id/5.\n"
         ":- multifile sen_id/5.\n"
@@ -102,18 +117,32 @@ def prepare_input_json(premises, hypothesis, parser, v=0):
         escaped = tokenized.replace("'", "\\'")
         sentences_escaped.append(escaped)
         sentences_pl.append(
-            "sen_id({0}, 1, '{1}', 'nil', '{2}').\n".format(idx, type_, escaped)
+            "sen_id({0}, 1, '{1}', 'nil', '{2}').".format(idx, type_, escaped)
         )
 
-    derivations = lp.ccg_parsing(parser, "\n".join(sentences_escaped), v=v)
+    if parsed is not None:
+        assert len(parsed["premises"]) == len(premises), \
+            "Number of parsed premises does not match number of premises"
+        parsed_premises = [ f"ccg({i},\n{prem_ccg}\n)"
+                    for i, prem_ccg in enumerate(parsed["premises"], start=1) ]
+        n = len(parsed_premises)
+        parsed_hypothesis = f"ccg({n+1},\n{parsed['hypothesis']}\n)"
+        # add the final dot if it was not provided as a part of the input
+        all_ccg = [ ccg if ccg.endswith(".") else f"{ccg}."
+                   for ccg in parsed_premises + [parsed_hypothesis] ]
+        derivations = "\n".join(all_ccg)
+    else:
+        derivations = lp.ccg_parsing(parser, "\n".join(sentences_escaped), v=v)
 
+    logger.info("sen_id facts:\n%s", "\n".join(sentences_pl))
+    logger.info("ccg facts:\n%s", derivations)
     return "\n".join(defs) + "\n".join(sentences_pl) + derivations
 
 
 def get_goal(facts, kb, config):
     assert_cl = lp.assertz_clause(facts)
     # json args are text width, indent step size, and tab size
-    return ' -g "{0}, {1}, online_demo(1, {2}, json(0,1,1)), halt"'.format(
+    return '-g "\n{0}, {1}, online_demo(1, {2}, json(0,1,1)),\nhalt"'.format(
         assert_cl, config, kb
     )
 
@@ -143,6 +172,7 @@ def process_proof(proof):
 @lru_cache  # meant for speeding up results during development
 def langpro_raw(goal):
     cmd = "swipl -x {} {} ".format(LANGPRO_BIN, goal)
+    logger.info(f"Running a swipl command: {cmd}")
     proof = run_tool(cmd)
     return process_proof(proof)
 
@@ -182,8 +212,10 @@ def parse_and_prove():
     if request.json is None:
         raise RuntimeError()
 
-    fmt = request.json.get("format", "raw")
+    fmt = request.json.get("format", "raw") # alternative "annotator"
     parser = request.json.get("parser", "easyccg")
+    # provide already parsed sentences, i.e., no need to use a parser
+    parsed = request.json.get("parsed", None)
     prover_config = request.json["prover_config"]
     premises = request.json["premises"]
     hypothesis = request.json["hypothesis"]
@@ -198,7 +230,8 @@ def parse_and_prove():
         v = 0
 
     prover_config = prepare_config(prover_config, senses, ral)
-    facts = prepare_input_json(premises, hypothesis, parser, v=v)
+    # get sen_id (nli problem sentences) and ccg (derivations) facts
+    facts = prepare_input_json(premises, hypothesis, parser, parsed, v=v)
     kb = prepare_kb(kb)
     goal = get_goal(facts, kb, prover_config)
     if v > 0:
