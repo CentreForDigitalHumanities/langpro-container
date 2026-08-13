@@ -1,6 +1,6 @@
 def extract_langpro_prediction(proofs: dict) -> str:
     """
-    LangPro's prediction can be deduced from the 'info' field.
+    LangPro's prediction can be deduced from the `info` field of each proof type.
 
     Expected input (`proofs`):
 
