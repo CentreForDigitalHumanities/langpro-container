@@ -1,3 +1,13 @@
+def get_proof_state(info: list[str]) -> str:
+    if not info:
+        return "failed"
+    if "open" in info:
+        return "open"
+    if "closed" in info:
+        return "closed"
+    return "failed"
+
+
 def extract_langpro_prediction(proofs: dict) -> str:
     """
     LangPro's prediction can be deduced from the `info` field of each proof type.
@@ -42,25 +52,15 @@ def extract_langpro_prediction(proofs: dict) -> str:
     entailment_info = proofs.get("entailment", {}).get("info", [])
     contradiction_info = proofs.get("contradiction", {}).get("info", [])
 
-    def get_proof_state(info):
-        if not info:
-            return "failed"
-        if "open" in info:
-            return "open"
-        if "closed" in info:
-            return "closed"
-        return "failed"
-
     entailment_state = get_proof_state(entailment_info)
     contradiction_state = get_proof_state(contradiction_info)
-
-    if entailment_state == "closed" and contradiction_state in ["open", "failed"]:
+    
+    if entailment_state == "closed":
+        if contradiction_state == "closed":
+            return "conflict"
         return "entailment"
-    elif contradiction_state == "closed" and entailment_state in ["open", "failed"]:
+    if contradiction_state == "closed":
         return "contradiction"
-    elif entailment_state == "failed" and contradiction_state == "failed":
+    if entailment_state == "failed" and contradiction_state == "failed":
         return "unknown"
-    elif entailment_state == "closed" and contradiction_state == "closed":
-        return "conflict"
-    else:
-        return "neutral"
+    return "neutral"
