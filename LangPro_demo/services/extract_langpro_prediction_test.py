@@ -31,16 +31,14 @@ CASES = [
 
 
 def make_proofs(entailment_info, contradiction_info):
-    proofs = {}
-    for key, info in [
-        ("entailment", entailment_info),
-        ("contradiction", contradiction_info),
-    ]:
-        if info is None:
-            continue
-        else:
-            proofs[key] = {"info": info, "proof": {}}
-    return proofs
+    return {
+        key: {"info": info, "proof": {}}
+        for key, info in [
+            ("entailment", entailment_info),
+            ("contradiction", contradiction_info),
+        ]
+        if info is not None
+    }
 
 
 @pytest.mark.parametrize("entailment_info,contradiction_info,expected", CASES)
