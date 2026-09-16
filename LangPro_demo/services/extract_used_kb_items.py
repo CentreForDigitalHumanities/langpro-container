@@ -22,12 +22,15 @@ def extract_used_kb_items(used_items: list[dict]) -> list:
     This assumes that the LangPro output contains a list of used items, each
     represented as a dictionary with a 'functor' and 'args'.
 
-    Items with a 'disj' functor are mapped to a KB item with relationship 'disjoint'.
-    Items with a single 'isa_wn' functor are mapped to a KB item with relationship 'subset'.
-    Item pairs with a 'isa_wn' functor and inverse arguments are mapped to a single KB item with relationship 'equal'.
+    - Items with a 'disj' functor are mapped to a KB item with relationship
+    'disjoint'.
+    - Items with a single 'isa_wn' functor are mapped to a KB item with
+    relationship 'subset'.
+    - Item pairs with a 'isa_wn' functor and inverse arguments are mapped to a
+    single KB item with relationship 'equal'.
 
     The output is sorted: 'equal'/'subset' items containing 'be' (a very common
-    and uninformative case are placed at the end of the list).
+    and uninformative case) are placed at the end of the list.
 
     Expected input (`used_items`):
 

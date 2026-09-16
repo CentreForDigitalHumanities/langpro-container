@@ -149,8 +149,9 @@ def langpro_raw(goal):
     return process_proof(proof)
 
 
-def serialize_tree(tree: Tree | PrologTerm | str, out=None):
-    """serialize nltk tree or PrologTerm to a dict"""
+def serialize_tree(tree: (Tree|PrologTerm|str), out=None):
+    """ serialize nltk tree or PrologTerm to a dict
+    """
     if out is None:
         out = dict()
 
@@ -173,7 +174,8 @@ def serialize_tree(tree: Tree | PrologTerm | str, out=None):
         return out
 
     raise TypeError(
-        f"Expected Tree or PrologTerm, got " f"{type(tree).__name__}: {repr(tree)[:50]}"
+        f"Expected Tree or PrologTerm, got "
+        f"{type(tree).__name__}: {repr(tree)[:50]}"
     )
 
 
