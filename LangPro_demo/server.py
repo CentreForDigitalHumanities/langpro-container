@@ -217,12 +217,8 @@ def parse_and_prove():
             "sentence": entry["sen"],
             "ccg_trees": {
                 "ccg_tree": serialize_tree(parse_ccg_tree(entry["tree"]["ccg_tree"])),
-                "ccg_term": serialize_tree(
-                    parse_term(entry["tree"]["ccg_term"]).tree()
-                ),
-                "corr_term": serialize_tree(
-                    parse_term(entry["tree"]["corr_term"]).tree()
-                ),
+                "ccg_term": serialize_tree(parse_term(entry["tree"]["ccg_term"]).tree()),
+                "corr_term": serialize_tree(parse_term(entry["tree"]["corr_term"]).tree()),
                 "llf": serialize_tree(parse_term(entry["tree"]["llf"]).tree()),
             },
         }
