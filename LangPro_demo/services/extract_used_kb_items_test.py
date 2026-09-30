@@ -58,10 +58,10 @@ def test_sort_kb_items():
     sorted_items = sort_kb_items(items)
 
     expected = [
-        KBItem(entity1="dog", entity2="cat", relationship=Relationship.DISJOINT),
-        KBItem(entity1="sun", entity2="moon", relationship=Relationship.DISJOINT),
         KBItem(entity1="cat", entity2="feline", relationship=Relationship.SUBSET),
+        KBItem(entity1="dog", entity2="cat", relationship=Relationship.DISJOINT),
         KBItem(entity1="fox", entity2="vulpine", relationship=Relationship.EQUAL),
+        KBItem(entity1="sun", entity2="moon", relationship=Relationship.DISJOINT),
         KBItem(entity1="human", entity2="be", relationship=Relationship.SUBSET),
         KBItem(entity1="be", entity2="exist", relationship=Relationship.EQUAL),
     ]

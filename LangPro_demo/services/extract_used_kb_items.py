@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import StrEnum
+from functools import partial
 
 
 class Relationship(StrEnum):
@@ -30,7 +31,8 @@ def extract_used_kb_items(used_items: list[dict]) -> list:
     single KB item with relationship 'equal'.
 
     The output is sorted: 'equal'/'subset' items containing 'be' (a very common
-    and uninformative case) are placed at the end of the list.
+    and uninformative case) are placed at the end of the list. The order of the
+    other elements is preserved.
 
     Expected input (`used_items`):
 
@@ -65,43 +67,53 @@ def extract_used_kb_items(used_items: list[dict]) -> list:
     """
     kb_items: list[KBItem] = []
 
+    # Maps (entity1, entity2) pairs to the first KBItem with those entities.
+    first_by_pair: dict[tuple[str, str], KBItem] = {}
+
+    def set_to_first_by_pair(kb_item: KBItem) -> None:
+        first_by_pair.setdefault((kb_item.entity1, kb_item.entity2), kb_item)
+
     for item in used_items:
         functor = item["functor"]
         args = item["args"]
 
         if functor == "disj":
-            kb_items.append(
-                KBItem(
-                    entity1=args[0], entity2=args[1], relationship=Relationship.DISJOINT
-                )
+            kb_item = KBItem(
+                entity1=args[0],
+                entity2=args[1],
+                relationship=Relationship.DISJOINT,
             )
+            kb_items.append(kb_item)
+            set_to_first_by_pair(kb_item)
             continue
 
         entity1, entity2 = args[0], args[1]
-        converse_item = [
-            kb_item
-            for kb_item in kb_items
-            if kb_item.entity1 == entity2 and kb_item.entity2 == entity1
-        ]
-        if converse_item:
-            converse_item[0].relationship = Relationship.EQUAL
+        converse_item = first_by_pair.get((entity2, entity1))
+        if converse_item is not None:
+            converse_item.relationship = Relationship.EQUAL
             continue
 
-        kb_items.append(
-            KBItem(entity1=entity1, entity2=entity2, relationship=Relationship.SUBSET)
+        kb_item = KBItem(
+            entity1=entity1, entity2=entity2, relationship=Relationship.SUBSET
         )
+
+        kb_items.append(kb_item)
+        set_to_first_by_pair(kb_item)
 
     return sort_kb_items(kb_items)
 
 
-def sort_kb_items(kb_items: list[KBItem]) -> list[KBItem]:
+def kb_item_order(item: KBItem) -> bool:
     """
-    Sorts the KB items such that 'equal'/'subset' items containing 'be' are placed at the end of the list.
+    Returns a value that can be used to sort KB items.
+    Items that are 'SUBSET' or 'EQUAL' and contain 'be' are considered less
+    informative and are sorted to the end of the list.
     """
-    return sorted(
-        kb_items,
-        key=lambda item: (
-            item.relationship != Relationship.DISJOINT,
-            "be" in (item.entity1, item.entity2),
-        ),
+    return item.relationship in (Relationship.SUBSET, Relationship.EQUAL) and "be" in (
+        item.entity1,
+        item.entity2,
     )
+
+
+sort_kb_items = partial(sorted, key=kb_item_order)
+sort_kb_items.__doc__ = """Sorts KB items, placing 'SUBSET' and 'EQUAL' items containing 'be' at the end of the list."""
