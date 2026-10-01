@@ -11,6 +11,7 @@ from langpro_api import parse_ccg_tree, parse_info_proof, parse_term, PrologTerm
 
 from util import run_tool
 from services.extract_langpro_prediction import extract_langpro_prediction
+from services.extract_used_kb_items import extract_used_kb_items
 
 app = Flask(__name__)
 
@@ -225,6 +226,7 @@ def parse_and_prove():
     ]
 
     langpro_prediction = extract_langpro_prediction(raw["proofs"])
+    used_kb_items = extract_used_kb_items(raw["kb"])
 
     return dict(
         ccg_parses=ccg_parses,
@@ -232,7 +234,8 @@ def parse_and_prove():
             key: serialize_tree(parse_info_proof(value))
             for key, value in raw["proofs"].items()
         },
-        langpro_prediction=langpro_prediction
+        langpro_prediction=langpro_prediction,
+        used_kb_items=used_kb_items,
     )
 
 
